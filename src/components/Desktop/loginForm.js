@@ -75,15 +75,15 @@ export default function LoginForm() {
     } catch (error) {
       setLoading(false);
       if (isAxiosError(error)) {
-        if (error.response.status === 401) {
+        if (error?.response?.status === 401) {
           handleOpen("Invalid credentials.");
-        } else if (error.response.status !== 401) {
+        } else if (error?.response?.status !== 401) {
           handleOpen(
             "Unable to login at this time. Kindly check your credentials"
           );
-        } else {
-          handleOpen("Something went wrong. Retry");
         }
+      } else {
+        handleOpen("Something went wrong. Retry");
       }
     }
   };
