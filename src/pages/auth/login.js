@@ -19,12 +19,12 @@ export default function LoginPage() {
         <Stack
           alignItems={"center"}
           justifyContent={"center"}
-          height={{ xs: 0, sm: "inherit" }}
+          height={{ xs: "50%", md: "inherit" }}
           bgcolor={"#d8d5e678"}
         >
           <Box
-            width={{ xs: "0%", sm: "50vw" }}
-            height={{ xs: 0, sm: "50vh" }}
+            width={{ xs: "100%", md: "50vw" }}
+            height={{ xs: "50%", sm: "50vh" }}
             position="relative"
           >
             <Image

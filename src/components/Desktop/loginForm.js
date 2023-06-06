@@ -142,7 +142,7 @@ export default function LoginForm() {
             component={Link}
             href="#"
             textAlign={"center"}
-            style={{ fontSize: 15, textDecoration: "none" }}
+            style={{ fontSize: 13, textDecoration: "none" }}
             color={(theme) => theme.palette.text.primary}
           >
             Mot de passe oublié ?
@@ -152,6 +152,7 @@ export default function LoginForm() {
             flexDirection={"column"}
             alignItems={"center"}
             justifyContent={"center"}
+            fontSize={13}
           >
             Vous n’avez pas encore de compte ?
             <Typography
