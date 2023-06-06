@@ -2,8 +2,11 @@ import * as React from "react";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Index() {
+  const router = useRouter();
+  router.push("/auth/login");
   return (
     <>
       <Head>

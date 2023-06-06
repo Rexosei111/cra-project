@@ -3,6 +3,7 @@ import {
   Alert,
   Button,
   Divider,
+  FormControlLabel,
   Paper,
   Snackbar,
   Stack,
@@ -21,6 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import axios, { isAxiosError } from "axios";
 import useToken from "@/hooks/token";
+import { AntSwitch } from "../Mobile/switches";
 
 const loginSchema = yup
   .object({
@@ -33,6 +35,7 @@ export default function LoginForm() {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [manager, setManager] = useState(true);
   const router = useRouter();
   const [token, setToken] = useToken("token", null);
 
@@ -58,11 +61,10 @@ export default function LoginForm() {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(token);
     const final_data = { username: data.email, password: data.password };
     try {
       const { data } = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE_URL + "/login_check",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/login_check",
         final_data,
         {
           headers: {
@@ -70,8 +72,20 @@ export default function LoginForm() {
           },
         }
       );
-      setToken(data);
+      const currentTime = new Date();
+      setToken({
+        ...data,
+        expiresIn: new Date(
+          currentTime.getTime() + process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN
+        ),
+      });
       setLoading(false);
+      const { callbackUrl } = router.query;
+      if (manager) {
+        router.push("/a/");
+      } else {
+        console.log("Unable to log in as manager");
+      }
     } catch (error) {
       setLoading(false);
       if (isAxiosError(error)) {
@@ -83,9 +97,14 @@ export default function LoginForm() {
           );
         }
       } else {
+        console.log(error);
         handleOpen("Something went wrong. Retry");
       }
     }
+  };
+
+  const handleManagerChange = (event) => {
+    setManager(!manager);
   };
 
   return (
@@ -125,6 +144,22 @@ export default function LoginForm() {
             }}
             fullWidth
             placeholder="Tapez votre mot de passe"
+          />
+          <FormControlLabel
+            control={
+              <AntSwitch
+                sx={{ m: 1 }}
+                defaultChecked
+                onChange={handleManagerChange}
+                value={manager}
+              />
+            }
+            label="Connectez-vous en tant que gestionnaire"
+            componentsProps={{
+              typography: {
+                fontSize: 13,
+              },
+            }}
           />
           <LoadingButton
             loadingPosition="start"
