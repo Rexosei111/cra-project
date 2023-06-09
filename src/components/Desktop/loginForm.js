@@ -76,7 +76,7 @@ export default function LoginForm() {
       setToken({
         ...data,
         expiresIn: new Date(
-          currentTime.getTime() + process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN
+          currentTime.getTime() + `${+process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN}`
         ),
       });
       setLoading(false);

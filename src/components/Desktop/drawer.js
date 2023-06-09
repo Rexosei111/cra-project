@@ -45,7 +45,7 @@ export function ResponsiveDrawer(props) {
       icon: (
         <AssignmentOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname === "/a/cra" ? "white" : null}
+          htmlColor={router.pathname.startsWith("/a/cra") ? "white" : null}
         />
       ),
       url: "/a/cra",
@@ -55,7 +55,7 @@ export function ResponsiveDrawer(props) {
       icon: (
         <GroupsOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname === "/a/clients" ? "white" : null}
+          htmlColor={router.pathname.startsWith("/a/clients") ? "white" : null}
         />
       ),
       url: "/a/clients",
@@ -65,7 +65,7 @@ export function ResponsiveDrawer(props) {
       icon: (
         <AssignmentTurnedInOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname === "/a/missions" ? "white" : null}
+          htmlColor={router.pathname.startsWith("/a/missions") ? "white" : null}
         />
       ),
       url: "/a/missions",
@@ -75,7 +75,9 @@ export function ResponsiveDrawer(props) {
       icon: (
         <GroupOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname === "/a/consultants" ? "white" : null}
+          htmlColor={
+            router.pathname.startsWith("/a/consultants") ? "white" : null
+          }
         />
       ),
       url: "/a/consultants",
@@ -103,7 +105,10 @@ export function ResponsiveDrawer(props) {
               disablePadding
               sx={{
                 bgcolor: (theme) =>
-                  router.pathname === item.url
+                  router.pathname === "/a" && item.label === "Accueil"
+                    ? theme.palette.primary.main
+                    : router.pathname.startsWith(item.url) &&
+                      item.label !== "Accueil"
                     ? theme.palette.primary.main
                     : null,
               }}
@@ -113,7 +118,13 @@ export function ResponsiveDrawer(props) {
                 <ListItemText
                   primary={item.label}
                   primaryTypographyProps={{
-                    color: router.pathname === item.url ? "white" : null,
+                    color:
+                      router.pathname === "/a" && item.label === "Accueil"
+                        ? "white"
+                        : router.pathname.startsWith(item.url) &&
+                          item.label !== "Accueil"
+                        ? "white"
+                        : null,
                   }}
                 />
               </ListItemButton>

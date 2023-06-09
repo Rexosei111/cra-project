@@ -47,7 +47,9 @@ export const useTokenRefresh = () => {
 };
 
 const useToken = (key, initialValue) => {
-  const router = useRouter();
+  if (typeof window !== "undefined") {
+    const router = useRouter();
+  }
   const [token, setState] = useState(() => {
     try {
       if (typeof window !== "undefined") {

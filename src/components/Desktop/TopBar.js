@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { LayoutContext } from "./agencyLayout";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function TopBar() {
+export default function TopBar({ title }) {
   const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth } =
     useContext(LayoutContext);
   return (
@@ -28,7 +28,7 @@ export default function TopBar() {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" noWrap component="div">
-          CRA APP
+          {title}
         </Typography>
       </Toolbar>
     </AppBar>

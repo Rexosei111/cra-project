@@ -3,36 +3,42 @@ import React from "react";
 import { createContext } from "react";
 import TopBar from "./TopBar";
 import { ResponsiveDrawer } from "./drawer";
+import Head from "next/head";
 
 export const LayoutContext = createContext(null);
 const drawerWidth = 240;
 
-export default function AgencyLayout({ children }) {
+export default function AgencyLayout({ children, title = "Accueil" }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
   return (
-    <LayoutContext.Provider
-      value={{ mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth }}
-    >
-      <Box sx={{ display: "flex" }}>
-        <TopBar />
-        <ResponsiveDrawer />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-          }}
-        >
-          <Toolbar />
-          {children}
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <LayoutContext.Provider
+        value={{ mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth }}
+      >
+        <Box sx={{ display: "flex" }}>
+          <TopBar title={title} />
+          <ResponsiveDrawer />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 2,
+              width: { sm: `calc(100% - ${drawerWidth}px)` },
+            }}
+          >
+            <Toolbar />
+            {children}
+          </Box>
         </Box>
-      </Box>
-      ;
-    </LayoutContext.Provider>
+        ;
+      </LayoutContext.Provider>
+    </>
   );
 }
