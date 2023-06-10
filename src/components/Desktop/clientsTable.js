@@ -34,100 +34,98 @@ const rows = [
 
 export default function BasicClientTable() {
   return (
-    <TableContainer component={Paper} elevation={0}>
-      <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                <Stack
-                  flexDirection={"row"}
-                  gap={1}
-                  alignItems={"center"}
-                  justifyContent={"flex-start"}
-                >
-                  <IconButton>
-                    <AcUnitIcon fontSize="small" />
-                  </IconButton>
-                  <Box>
-                    <Typography
-                      variant="subtitle2"
-                      fontSize={14}
-                      color={(theme) => theme.palette.secondary.main}
-                    >
-                      {row.name}
-                    </Typography>
-                    <Typography
-                      variant="subtitle2"
-                      fontSize={11}
-                      color={(theme) => theme.palette.text.secondary}
-                    >
-                      {row.name}
-                    </Typography>
-                  </Box>
-                </Stack>
-              </TableCell>
-              <TableCell align="center">
-                <Button
-                  disableElevation
-                  disableFocusRipple
-                  disableRipple
-                  disableTouchRipple
-                  size="small"
-                  sx={{
-                    textTransform: "capitalize",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                  startIcon={<GroupOutlinedIcon fontSize="small" />}
-                >
-                  {row.calories} consultants
-                </Button>
-              </TableCell>
-              <TableCell align="center">
-                <Button
-                  disableElevation
-                  disableFocusRipple
-                  variant="text"
-                  color="secondary"
-                  disableRipple
-                  disableTouchRipple
-                  size="small"
-                  sx={{
-                    textTransform: "capitalize",
-                    color: (theme) => theme.palette.text.secondary,
-                  }}
-                  startIcon={<AssignmentOutlinedIcon fontSize="small" />}
-                >
-                  {row.fat} missions
-                </Button>
-              </TableCell>
-              <TableCell align="center">
-                <Chip
-                  label={`${row.carbs} CRA Validés`}
-                  variant="filled"
-                  color="default"
-                  size="small"
-                />
-              </TableCell>
-              <TableCell align="center">
-                <Button
-                  disableElevation
-                  variant="text"
-                  color="secondary"
-                  size="small"
-                  sx={{ textTransform: "capitalize" }}
-                  startIcon={<Edit fontSize="small" />}
-                >
-                  Editer
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
+      <TableBody>
+        {rows.map((row) => (
+          <TableRow
+            key={row.name}
+            sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+          >
+            <TableCell component="th" scope="row">
+              <Stack
+                flexDirection={"row"}
+                gap={1}
+                alignItems={"center"}
+                justifyContent={"flex-start"}
+              >
+                <IconButton>
+                  <AcUnitIcon fontSize="small" />
+                </IconButton>
+                <Box>
+                  <Typography
+                    variant="subtitle2"
+                    fontSize={14}
+                    color={(theme) => theme.palette.secondary.main}
+                  >
+                    {row.name}
+                  </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    fontSize={11}
+                    color={(theme) => theme.palette.text.secondary}
+                  >
+                    {row.name}
+                  </Typography>
+                </Box>
+              </Stack>
+            </TableCell>
+            <TableCell align="center">
+              <Button
+                disableElevation
+                disableFocusRipple
+                disableRipple
+                disableTouchRipple
+                size="small"
+                sx={{
+                  textTransform: "capitalize",
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+                startIcon={<GroupOutlinedIcon fontSize="small" />}
+              >
+                {row.calories} consultants
+              </Button>
+            </TableCell>
+            <TableCell align="center">
+              <Button
+                disableElevation
+                disableFocusRipple
+                variant="text"
+                color="secondary"
+                disableRipple
+                disableTouchRipple
+                size="small"
+                sx={{
+                  textTransform: "capitalize",
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+                startIcon={<AssignmentOutlinedIcon fontSize="small" />}
+              >
+                {row.fat} missions
+              </Button>
+            </TableCell>
+            <TableCell align="center">
+              <Chip
+                label={`${row.carbs} CRA Validés`}
+                variant="filled"
+                color="default"
+                size="small"
+              />
+            </TableCell>
+            <TableCell align="center">
+              <Button
+                disableElevation
+                variant="text"
+                color="secondary"
+                size="small"
+                sx={{ textTransform: "capitalize" }}
+                startIcon={<Edit fontSize="small" />}
+              >
+                Editer
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }
