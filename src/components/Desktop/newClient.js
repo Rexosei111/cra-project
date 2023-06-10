@@ -276,7 +276,7 @@ export default function NewClientForm() {
               setContacts((prevState) => [...prevState, {}]);
             }}
             startIcon={<AddCircleOutlineIcon fontSize="small" />}
-            sx={{ ml: "auto" }}
+            sx={{ ml: "auto", textTransform: "capitalize" }}
             color="secondary"
           >
             Ajouter un contact

@@ -24,7 +24,7 @@ export default function ConsultantsPage({ title }) {
             component={Link}
             href="/a/consultants/new"
             startIcon={<Add fontSize="small" />}
-            sx={{ ml: "auto" }}
+            sx={{ ml: "auto", textTransform: "capitalize" }}
             disableElevation
           >
             New

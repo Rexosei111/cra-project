@@ -25,7 +25,7 @@ export default function MissionsPage({ title }) {
             component={Link}
             href="/a/missions/new"
             startIcon={<Add fontSize="small" />}
-            sx={{ ml: "auto" }}
+            sx={{ ml: "auto", textTransform: "capitalize" }}
             disableElevation
           >
             New
