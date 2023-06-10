@@ -33,12 +33,12 @@ export const useTokenRefresh = () => {
     const intervalId = setInterval(() => {
       // Refresh the access token 5 minutes before it expires
       const currentTime = new Date();
-      const expiresIn = new Date(token?.expiresIn);
+      const expiresIn = new Date(+token?.expiresIn);
       const timeUntilExpiration = expiresIn?.getTime() - currentTime?.getTime(); // calculate time until expiration of access token
       if (timeUntilExpiration < 5 * 60 * 1000) {
         refreshAccessToken();
       }
-    }, process.env.NEXT_PUBLIC_TOKEN_REFRESH_CHECK); // Check every minute
+    }, +process.env.NEXT_PUBLIC_TOKEN_REFRESH_CHECK); // Check every minute
 
     return () => clearInterval(intervalId);
   }, [token]);

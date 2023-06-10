@@ -72,12 +72,13 @@ export default function LoginForm() {
           },
         }
       );
+      const token_expire_time = +process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN;
       const currentTime = new Date();
       setToken({
         ...data,
         expiresIn: new Date(
-          currentTime.getTime() + `${+process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN}`
-        ),
+          currentTime.getTime() + token_expire_time
+        ).getTime(),
       });
       setLoading(false);
       const { callbackUrl } = router.query;

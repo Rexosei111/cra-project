@@ -1,3 +1,4 @@
+import Listing from "@/components/Desktop/Listing";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
 import BasicClientTable from "@/components/Desktop/clientsTable";
 import SearchBar from "@/components/Desktop/searchBar";
@@ -10,9 +11,9 @@ import React from "react";
 export default function ClientsPage({ title }) {
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>{title}</title>
-      </Head>
+      </Head> */}
       <Stack width={"100%"} flexDirection={"column"} gap={2}>
         <Stack
           width={"100%"}
@@ -32,6 +33,7 @@ export default function ClientsPage({ title }) {
           </Button>
           {/* <BasicClientTable /> */}
         </Stack>
+        <Listing />
       </Stack>
     </>
   );

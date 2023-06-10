@@ -1,3 +1,4 @@
+import Listing from "@/components/Desktop/Listing";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
 import SearchBar from "@/components/Desktop/searchBar";
 import { Add } from "@mui/icons-material";
@@ -31,6 +32,7 @@ export default function ConsultantsPage({ title }) {
           </Button>
           {/* <BasicClientTable /> */}
         </Stack>
+        <Listing />
       </Stack>
     </>
   );
