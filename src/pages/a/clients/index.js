@@ -7,8 +7,17 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import { fetcher } from "@/utils/swr_fetcher";
+import useSWR from "swr";
 
 export default function ClientsPage({ title }) {
+  const { data, error } = useSWR("/api/clients", fetcher);
+  if (error) {
+    console.log(error);
+  }
+  if (data) {
+    console.log(data);
+  }
   return (
     <>
       {/* <Head>

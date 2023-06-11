@@ -19,7 +19,7 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 
-import { Edit } from "@mui/icons-material";
+import { DateRangeOutlined, Edit } from "@mui/icons-material";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -42,21 +42,25 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicClientTable() {
+export default function AccueilTable({ validated = false }) {
   const [page, setPage] = React.useState(0);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
 
-  const handleChangeRowsPerPage = (event) => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
   return (
     <>
-      <TableContainer component={Paper} elevation={0}>
+      <TableContainer component={"div"} elevation={0}>
         <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
-          <TableBody>
+          <TableHead>
+            <TableRow>
+              <TableCell>Consultant</TableCell>
+              <TableCell align="center">Client</TableCell>
+              <TableCell align="center">
+                {validated ? "Période" : "Échéance"}
+              </TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody component={Paper} elevation={0}>
             {rows.map((row) => (
               <TableRow
                 key={row.name}
@@ -78,14 +82,11 @@ export default function BasicClientTable() {
                       <Typography
                         variant="subtitle2"
                         fontSize={14}
-                        color={(theme) => theme.palette.secondary.main}
-                      >
-                        {row.name}
-                      </Typography>
-                      <Typography
-                        variant="subtitle2"
-                        fontSize={11}
-                        color={(theme) => theme.palette.text.secondary}
+                        color={(theme) =>
+                          validated
+                            ? theme.palette.secondary.main
+                            : theme.palette.primary.main
+                        }
                       >
                         {row.name}
                       </Typography>
@@ -101,11 +102,14 @@ export default function BasicClientTable() {
                     size="small"
                     sx={{
                       textTransform: "capitalize",
-                      color: (theme) => theme.palette.text.secondary,
+                      color: (theme) =>
+                        validated
+                          ? theme.palette.text.secondary
+                          : theme.palette.primary.main,
                     }}
                     startIcon={<GroupOutlinedIcon fontSize="small" />}
                   >
-                    {row.calories} consultants
+                    Le Figaro
                   </Button>
                 </TableCell>
                 <TableCell align="center">
@@ -113,24 +117,27 @@ export default function BasicClientTable() {
                     disableElevation
                     disableFocusRipple
                     variant="text"
-                    color="secondary"
+                    color="primary"
                     disableRipple
                     disableTouchRipple
                     size="small"
                     sx={{
                       textTransform: "capitalize",
-                      color: (theme) => theme.palette.text.secondary,
+                      color: (theme) =>
+                        validated
+                          ? theme.palette.text.secondary
+                          : theme.palette.primary.main,
                     }}
-                    startIcon={<AssignmentOutlinedIcon fontSize="small" />}
+                    startIcon={<DateRangeOutlined fontSize="small" />}
                   >
-                    {row.fat} missions
+                    A valider avant le 27 Mai
                   </Button>
                 </TableCell>
                 <TableCell align="center">
                   <Chip
                     label={`${row.carbs} CRA Validés`}
                     variant="filled"
-                    color="default"
+                    color={validated ? "default" : "primary"}
                     size="small"
                   />
                 </TableCell>
@@ -138,12 +145,13 @@ export default function BasicClientTable() {
                   <Button
                     disableElevation
                     variant="text"
-                    color="secondary"
+                    color={validated ? "secondary" : "primary"}
                     size="small"
-                    sx={{ textTransform: "capitalize" }}
-                    startIcon={<Edit fontSize="small" />}
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
                   >
-                    Editer
+                    Relancer
                   </Button>
                 </TableCell>
               </TableRow>
@@ -151,15 +159,6 @@ export default function BasicClientTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        // rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        // rowsPerPage={rowsPerPage}
-        page={1}
-        onPageChange={handleChangePage}
-        // onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </>
   );
 }
