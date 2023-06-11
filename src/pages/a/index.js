@@ -1,4 +1,6 @@
-import AccueilTable from "@/components/Desktop/AccueilTable";
+import AccueilTable, {
+  AccueilValidTable,
+} from "@/components/Desktop/AccueilTable";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
 import { Box, Stack, Typography } from "@mui/material";
 import Head from "next/head";
@@ -20,7 +22,7 @@ export default function IndexPage() {
         <Typography variant="caption" fontSize={18} fontWeight={700}>
           CRA validés
         </Typography>
-        <AccueilTable validated={true} />
+        <AccueilValidTable />
       </Stack>
     </>
   );

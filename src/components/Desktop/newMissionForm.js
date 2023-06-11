@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
+  InputLabel,
   MenuItem,
   Paper,
   Stack,
@@ -22,7 +23,15 @@ import * as yup from "yup";
 import { AntSwitch } from "../Mobile/switches";
 import { LoadingButton } from "@mui/lab";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { ArrowCircleRight, Close, Delete, Percent } from "@mui/icons-material";
+import {
+  ArrowCircleRight,
+  Close,
+  Delete,
+  Email,
+  Percent,
+  Person,
+  Work,
+} from "@mui/icons-material";
 import EuroIcon from "@mui/icons-material/Euro";
 
 const contactSchema = yup.object({
@@ -130,91 +139,143 @@ export default function NewMissionForm() {
         id="missionForm"
         elevation={0}
       >
-        <TextInputField
-          {...register("name")}
-          variant="outlined"
-          type={"text"}
-          label="Nom du client"
-          error={errors.name ? true : false}
-          helperText={errors.name ? errors.name?.message : null}
-          fullWidth
-          placeholder="Coca-Cola"
-        />
-        <Divider sx={{ my: 3 }} variant="middle" />
-        <Typography
-          gutterBottom
-          variant="caption"
-          fontSize={18}
-          fontWeight={700}
-        >
-          Client
-        </Typography>
-        <TextInputField
-          fullWidth
-          placeholder="Client"
-          variant="outlined"
-          color="secondary"
-          defaultValue={""}
-          select
-          type={"text"}
-          size="small"
-          sx={{ mt: 2 }}
-        >
-          {selectOptions.map((option, index) => (
-            <MenuItem key={index} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextInputField>
-        <Stack
-          flexDirection={"column"}
-          minWidth={270}
-          width={{ xs: "100%" }}
-          gap={2}
+        <Box width={{ xs: "100%", md: "70%" }}>
+          <InputLabel shrink htmlFor="name">
+            Nom du client
+          </InputLabel>
+          <TextInputField
+            {...register("name")}
+            variant="outlined"
+            type={"text"}
+            // label="Nom du client"
+            error={errors.name ? true : false}
+            helperText={errors.name ? errors.name?.message : null}
+            fullWidth
+            placeholder="Coca-Cola"
+          />
+        </Box>
+        {/* <Divider sx={{ my: 3 }} variant="middle" /> */}
+        <Box
+          width={"100%"}
           mt={3}
+          sx={{
+            bgcolor: (theme) => theme.palette.background.default,
+            p: 2,
+            borderRadius: 3,
+          }}
         >
-          <Typography variant="subtitle2" fontSize={18} fontWeight={700}>
-            Contacts
+          <Typography
+            gutterBottom
+            variant="caption"
+            fontSize={18}
+            fontWeight={700}
+          >
+            Client
           </Typography>
-          <Grid container spacing={4}>
-            {contacts.map((contact, index) => (
-              <Grid item xs={12} sm={6} md={5} key={index}>
-                <Stack flexDirection={"column"} gap={2} width={"100%"}>
-                  <TextInputField
-                    {...register(`contacts[${index}].name`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"text"}
-                    // label="Nom, prénom"
-                    error={errors?.contacts?.[index]?.name ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.name
-                        ? errors?.contacts?.[index]?.name?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Nom, prénom"
-                  />
-                  <TextInputField
-                    {...register(`contacts[${index}].email`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"email"}
-                    // label="Email"
-                    error={errors?.contacts?.[index]?.email ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.email
-                        ? errors?.contacts?.[index]?.email?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="example@gmail.com"
-                  />
-                  {/* <TextInputField
+          <Box width={{ xs: "100%", md: "70%" }}>
+            <TextInputField
+              placeholder="Client"
+              variant="outlined"
+              color="secondary"
+              defaultValue={""}
+              select
+              type={"text"}
+              size="small"
+              fullWidth
+              sx={{
+                mt: 2,
+                bgcolor: (theme) => theme.palette.background.paper,
+              }}
+            >
+              {selectOptions.map((option, index) => (
+                <MenuItem key={index} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextInputField>
+          </Box>
+          <Stack
+            flexDirection={"column"}
+            minWidth={270}
+            width={{ xs: "100%" }}
+            gap={2}
+            mt={3}
+          >
+            <Typography variant="subtitle2" fontSize={15} fontWeight={700}>
+              Contacts
+            </Typography>
+            <Grid container spacing={4}>
+              {contacts.map((contact, index) => (
+                <Grid item xs={12} sm={6} md={5} key={index}>
+                  <Stack flexDirection={"column"} gap={1} width={"100%"}>
+                    <Box width={"100%"}>
+                      <InputLabel shrink htmlFor={`contacts[${index}].name`}>
+                        Nom, prenom
+                      </InputLabel>
+                      <TextInputField
+                        {...register(`contacts[${index}].name`)}
+                        variant="outlined"
+                        color="secondary"
+                        focused
+                        size="small"
+                        type={"text"}
+                        sx={{
+                          bgcolor: (theme) => theme.palette.background.paper,
+                        }}
+                        // label="Nom, prénom"
+                        error={errors?.contacts?.[index]?.name ? true : false}
+                        helperText={
+                          errors?.contacts?.[index]?.name
+                            ? errors?.contacts?.[index]?.name?.message
+                            : null
+                        }
+                        fullWidth
+                        placeholder="Davy Manager"
+                        InputProps={{
+                          style: { fontSize: 14 },
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Person fontSize="small" />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Box>
+                    <Box width={"100%"}>
+                      <InputLabel shrink htmlFor={`contacts[${index}].email`}>
+                        Email
+                      </InputLabel>
+
+                      <TextInputField
+                        {...register(`contacts[${index}].email`)}
+                        variant="outlined"
+                        color="secondary"
+                        focused
+                        size="small"
+                        type={"email"}
+                        // label="Email"
+                        error={errors?.contacts?.[index]?.email ? true : false}
+                        helperText={
+                          errors?.contacts?.[index]?.email
+                            ? errors?.contacts?.[index]?.email?.message
+                            : null
+                        }
+                        fullWidth
+                        placeholder="example@gmail.com"
+                        sx={{
+                          bgcolor: (theme) => theme.palette.background.paper,
+                        }}
+                        InputProps={{
+                          style: { fontSize: 14 },
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Email fontSize="small" />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Box>
+                    {/* <TextInputField
                     {...register(`contacts[${index}].phone`)}
                     variant="outlined"
                     color="secondary"
@@ -227,83 +288,105 @@ export default function NewMissionForm() {
                       errors?.contacts?.[index]?.phone
                         ? errors?.contacts?.[index]?.phone?.message
                         : null
-                    }
+                      }
                     fullWidth
                     placeholder="123456789"
                   /> */}
-                  <TextInputField
-                    {...register(`contacts[${index}].position`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"text"}
-                    // label="Fonction"
-                    error={errors?.contacts?.[index]?.position ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.position
-                        ? errors?.contacts?.[index]?.position?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Fonction"
-                  />
-                  <Stack
-                    flexDirection={"row"}
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    width={"100%"}
-                  >
-                    <FormControlLabel
-                      control={
-                        <AntSwitch
-                          {...register(`contacts[${index}].receiveCra`)}
-                          sx={{ m: 1 }}
-                          // onChange={handleManagerChange}
-                          // value={manager}
-                        />
-                      }
-                      label="Reçoit et valide les CRA"
-                      componentsProps={{
-                        typography: {
-                          fontSize: 13,
-                        },
-                      }}
-                    />
-                    {contacts.length > 1 && (
-                      <Button
-                        startIcon={<Delete fontSize="small" />}
-                        size="small"
-                        onClick={() => {
-                          setContacts((prevState) => [
-                            ...prevState.filter(
-                              (item, contactIndex) => contactIndex !== index
-                            ),
-                          ]);
-                          remove(index);
-                        }}
+                    <Box width={"100%"}>
+                      <InputLabel
+                        shrink
+                        htmlFor={`contacts[${index}].position`}
                       >
-                        delete
-                      </Button>
-                    )}
+                        Fonction
+                      </InputLabel>
+                      <TextInputField
+                        {...register(`contacts[${index}].position`)}
+                        variant="outlined"
+                        color="secondary"
+                        focused
+                        size="small"
+                        type={"text"}
+                        // label="Fonction"
+                        error={
+                          errors?.contacts?.[index]?.position ? true : false
+                        }
+                        helperText={
+                          errors?.contacts?.[index]?.position
+                            ? errors?.contacts?.[index]?.position?.message
+                            : null
+                        }
+                        fullWidth
+                        placeholder="Chef"
+                        sx={{
+                          bgcolor: (theme) => theme.palette.background.paper,
+                        }}
+                        InputProps={{
+                          style: { fontSize: 14 },
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Work fontSize="small" />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Box>
+                    <Stack
+                      flexDirection={"row"}
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                      width={"100%"}
+                    >
+                      <FormControlLabel
+                        control={
+                          <AntSwitch
+                            {...register(`contacts[${index}].receiveCra`)}
+                            sx={{ m: 1 }}
+                            // onChange={handleManagerChange}
+                            // value={manager}
+                          />
+                        }
+                        label="Reçoit et valide les CRA"
+                        componentsProps={{
+                          typography: {
+                            fontSize: 13,
+                          },
+                        }}
+                      />
+                      {contacts.length > 1 && (
+                        <Button
+                          startIcon={<Delete fontSize="small" />}
+                          size="small"
+                          onClick={() => {
+                            setContacts((prevState) => [
+                              ...prevState.filter(
+                                (item, contactIndex) => contactIndex !== index
+                              ),
+                            ]);
+                            remove(index);
+                          }}
+                        >
+                          delete
+                        </Button>
+                      )}
+                    </Stack>
                   </Stack>
-                </Stack>
-              </Grid>
-            ))}
-          </Grid>
-          <Button
-            variant="contained"
-            disableElevation
-            onClick={() => {
-              setContacts((prevState) => [...prevState, {}]);
-            }}
-            startIcon={<AddCircleOutlineIcon fontSize="small" />}
-            sx={{ ml: "auto", textTransform: "capitalize" }}
-            color="secondary"
-          >
-            Ajouter un contact
-          </Button>
-        </Stack>
+                </Grid>
+              ))}
+            </Grid>
+            <Button
+              variant="contained"
+              disableElevation
+              onClick={() => {
+                setContacts((prevState) => [...prevState, {}]);
+              }}
+              startIcon={<AddCircleOutlineIcon fontSize="small" />}
+              sx={{ ml: "auto", textTransform: "capitalize" }}
+              color="secondary"
+            >
+              Ajouter un contact
+            </Button>
+          </Stack>
+        </Box>
         <Divider sx={{ my: 2 }} variant="middle" />
         <Stack width={{ xs: "100%" }} flexDirection={"column"} gap={2}>
           <Typography variant="caption" fontSize={18} fontWeight={700}>

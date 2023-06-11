@@ -19,7 +19,12 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 
-import { DateRangeOutlined, Edit } from "@mui/icons-material";
+import {
+  DateRangeOutlined,
+  DownloadDoneOutlined,
+  DownloadOutlined,
+  Edit,
+} from "@mui/icons-material";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -75,8 +80,8 @@ export default function AccueilTable({ validated = false }) {
                     alignItems={"center"}
                     justifyContent={"flex-start"}
                   >
-                    <IconButton>
-                      <AcUnitIcon fontSize="small" />
+                    <IconButton sx={{ bgcolor: (theme) => "#ff352412" }}>
+                      <AcUnitIcon fontSize="small" htmlColor="#FF3524" />
                     </IconButton>
                     <Box>
                       <Typography
@@ -162,3 +167,115 @@ export default function AccueilTable({ validated = false }) {
     </>
   );
 }
+
+export const AccueilValidTable = () => {
+  return (
+    <>
+      <TableContainer component={"div"} elevation={0}>
+        <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell>Consultant</TableCell>
+              <TableCell align="center">Client</TableCell>
+              <TableCell align="center">"Période"</TableCell>
+              <TableCell align="center"></TableCell>
+              <TableCell align="center"></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody component={Paper} elevation={0}>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  <Stack
+                    flexDirection={"row"}
+                    gap={1}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                  >
+                    <IconButton
+                      sx={{
+                        bgcolor: "#47969630",
+                      }}
+                    >
+                      <AcUnitIcon fontSize="small" htmlColor="#479696" />
+                    </IconButton>
+                    <Box>
+                      <Typography
+                        variant="subtitle2"
+                        fontSize={14}
+                        color={(theme) => theme.palette.secondary.main}
+                      >
+                        {row.name}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    disableElevation
+                    disableFocusRipple
+                    disableRipple
+                    disableTouchRipple
+                    size="small"
+                    sx={{
+                      textTransform: "capitalize",
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                    startIcon={<GroupOutlinedIcon fontSize="small" />}
+                  >
+                    Le Figaro
+                  </Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    disableElevation
+                    disableFocusRipple
+                    variant="text"
+                    color="primary"
+                    disableRipple
+                    disableTouchRipple
+                    size="small"
+                    sx={{
+                      textTransform: "capitalize",
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                    startIcon={<DateRangeOutlined fontSize="small" />}
+                  >
+                    Mai - 19 jours
+                  </Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Chip
+                    label={`${row.carbs} CRA Validés`}
+                    variant="filled"
+                    color={"secondary"}
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Button
+                    disableElevation
+                    variant="text"
+                    color="secondary"
+                    size="small"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                    startIcon={<DownloadOutlined fontSize="small" />}
+                  >
+                    Télécharger (pdf)
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+};

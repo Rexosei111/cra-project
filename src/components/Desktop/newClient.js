@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
+  InputLabel,
   MenuItem,
   Paper,
   Stack,
@@ -22,7 +23,7 @@ import * as yup from "yup";
 import { AntSwitch } from "../Mobile/switches";
 import { LoadingButton } from "@mui/lab";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { Close, Delete } from "@mui/icons-material";
+import { Close, Delete, Email, Person, Phone, Work } from "@mui/icons-material";
 
 const contactSchema = yup.object({
   name: yup.string().required("This field is required"),
@@ -119,29 +120,40 @@ export default function NewClientForm() {
           gap={{ xs: 2, md: 5 }}
           flexWrap={{ xs: "wrap", md: "nowrap" }}
         >
-          <TextInputField
-            {...register("name")}
-            variant="outlined"
-            type={"text"}
-            label="Nom du client"
-            error={errors.name ? true : false}
-            helperText={errors.name ? errors.name?.message : null}
-            fullWidth
-            focused
-            placeholder="Coca-Cola"
-          />
-          <TextInputField
-            {...register("siren")}
-            variant="outlined"
-            color="secondary"
-            focused
-            type={"text"}
-            label="SIREN facultatif"
-            error={errors.siren ? true : false}
-            helperText={errors.siren ? errors.siren?.message : null}
-            fullWidth
-            placeholder="Coca-Cola"
-          />
+          <Box width={"100%"}>
+            <InputLabel shrink htmlFor="name">
+              Nom du client
+            </InputLabel>
+            <TextInputField
+              {...register("name")}
+              variant="filled"
+              color="secondary"
+              type={"text"}
+              // label="Nom du client"
+              error={errors.name ? true : false}
+              helperText={errors.name ? errors.name?.message : null}
+              fullWidth
+              // focused
+              placeholder="Coca-Cola"
+            />
+          </Box>
+          <Box width={"100%"}>
+            <InputLabel shrink htmlFor="siren">
+              SIREN facultatif
+            </InputLabel>
+            <TextInputField
+              {...register("siren")}
+              variant="filled"
+              color="secondary"
+              // focused
+              type={"text"}
+              // label="SIREN facultatif"
+              error={errors.siren ? true : false}
+              helperText={errors.siren ? errors.siren?.message : null}
+              fullWidth
+              placeholder="Coca-Cola"
+            />
+          </Box>
         </Stack>
 
         <Stack
@@ -150,82 +162,143 @@ export default function NewClientForm() {
           width={{ xs: "100%" }}
           gap={2}
           mt={5}
+          bgcolor={(theme) => theme.palette.background.default}
+          p={2}
+          sx={{ borderRadius: 2 }}
         >
           <Typography variant="subtitle2" fontSize={18} fontWeight={700}>
             Contacts
           </Typography>
-          <Grid container spacing={4}>
+          <Grid container rowSpacing={4} columnSpacing={7}>
             {contacts.map((contact, index) => (
-              <Grid item xs={12} sm={6} md={5} key={index}>
-                <Stack flexDirection={"column"} gap={2} width={"100%"}>
-                  <TextInputField
-                    {...register(`contacts[${index}].name`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"text"}
-                    label="Nom, prénom"
-                    error={errors?.contacts?.[index]?.name ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.name
-                        ? errors?.contacts?.[index]?.name?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Coca-Cola"
-                  />
-                  <TextInputField
-                    {...register(`contacts[${index}].email`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"email"}
-                    label="Email"
-                    error={errors?.contacts?.[index]?.email ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.email
-                        ? errors?.contacts?.[index]?.email?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Coca-Cola"
-                  />
-                  <TextInputField
-                    {...register(`contacts[${index}].phone`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"text"}
-                    label="Phone number"
-                    error={errors?.contacts?.[index]?.phone ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.phone
-                        ? errors?.contacts?.[index]?.phone?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Coca-Cola"
-                  />
-                  <TextInputField
-                    {...register(`contacts[${index}].position`)}
-                    variant="outlined"
-                    color="secondary"
-                    focused
-                    size="small"
-                    type={"text"}
-                    label="Fonction"
-                    error={errors?.contacts?.[index]?.position ? true : false}
-                    helperText={
-                      errors?.contacts?.[index]?.position
-                        ? errors?.contacts?.[index]?.position?.message
-                        : null
-                    }
-                    fullWidth
-                    placeholder="Coca-Cola"
-                  />
+              <Grid item xs={12} sm={12} md={8} lg={5} key={index}>
+                <Stack flexDirection={"column"} gap={1} width={"100%"}>
+                  <Box width={"inherit"}>
+                    <InputLabel shrink htmlFor={`contacts[${index}].name`}>
+                      Nom, prénom
+                    </InputLabel>
+                    <TextInputField
+                      {...register(`contacts[${index}].name`)}
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      type={"text"}
+                      sx={{
+                        bgcolor: (theme) => theme.palette.background.paper,
+                      }}
+                      error={errors?.contacts?.[index]?.name ? true : false}
+                      helperText={
+                        errors?.contacts?.[index]?.name
+                          ? errors?.contacts?.[index]?.name?.message
+                          : null
+                      }
+                      fullWidth
+                      placeholder="Coca-Cola"
+                      InputProps={{
+                        style: { fontSize: 14 },
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Person fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box width={"100%"}>
+                    <InputLabel shrink htmlFor={`contacts[${index}].email`}>
+                      Email
+                    </InputLabel>
+                    <TextInputField
+                      {...register(`contacts[${index}].email`)}
+                      variant="outlined"
+                      color="secondary"
+                      size="small"
+                      sx={{
+                        bgcolor: (theme) => theme.palette.background.paper,
+                      }}
+                      type={"email"}
+                      error={errors?.contacts?.[index]?.email ? true : false}
+                      helperText={
+                        errors?.contacts?.[index]?.email
+                          ? errors?.contacts?.[index]?.email?.message
+                          : null
+                      }
+                      fullWidth
+                      placeholder="example@gmail.com"
+                      InputProps={{
+                        style: { fontSize: 14 },
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Email fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box width={"100%"}>
+                    <InputLabel shrink htmlFor={`contacts[${index}].phone`}>
+                      Phone number
+                    </InputLabel>
+                    <TextInputField
+                      {...register(`contacts[${index}].phone`)}
+                      variant="outlined"
+                      color="secondary"
+                      sx={{
+                        bgcolor: (theme) => theme.palette.background.paper,
+                      }}
+                      size="small"
+                      type={"text"}
+                      error={errors?.contacts?.[index]?.phone ? true : false}
+                      helperText={
+                        errors?.contacts?.[index]?.phone
+                          ? errors?.contacts?.[index]?.phone?.message
+                          : null
+                      }
+                      fullWidth
+                      placeholder="Coca-Cola"
+                      InputProps={{
+                        style: { fontSize: 14 },
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Phone fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Box>
+                  <Box width={"inherit"}>
+                    <InputLabel shrink htmlFor={`contacts[${index}].position`}>
+                      Fonction
+                    </InputLabel>
+                    <TextInputField
+                      {...register(`contacts[${index}].position`)}
+                      variant="outlined"
+                      color="secondary"
+                      sx={{
+                        bgcolor: (theme) => theme.palette.background.paper,
+                      }}
+                      // focused
+                      size="small"
+                      type={"text"}
+                      // label="Fonction"
+                      error={errors?.contacts?.[index]?.position ? true : false}
+                      helperText={
+                        errors?.contacts?.[index]?.position
+                          ? errors?.contacts?.[index]?.position?.message
+                          : null
+                      }
+                      fullWidth
+                      placeholder="Coca-Cola"
+                      InputProps={{
+                        style: { fontSize: 14 },
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Work fontSize="small" />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Box>
                   <Stack
                     flexDirection={"row"}
                     alignItems={"center"}
