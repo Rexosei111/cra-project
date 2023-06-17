@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Divider,
@@ -8,6 +9,7 @@ import {
   InputLabel,
   MenuItem,
   Paper,
+  Snackbar,
   Stack,
   TextField,
   Typography,
@@ -24,6 +26,7 @@ import { AntSwitch } from "../Mobile/switches";
 import { LoadingButton } from "@mui/lab";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Close, Delete, Email, Person, Phone, Work } from "@mui/icons-material";
+import { APIClient } from "@/utils/axios";
 
 const contactSchema = yup.object({
   name: yup.string().required("This field is required"),
@@ -67,6 +70,21 @@ export const TextInputField = styled(TextField)({
 export default function NewClientForm() {
   const [contacts, setContacts] = useState([{}]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const {
     register,
     control,
@@ -85,19 +103,16 @@ export default function NewClientForm() {
     const final_data = { ...data, organization: token?.me.organization?.id };
     setLoading(true);
     try {
-      const { data } = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/clients",
-        final_data,
-        {
-          headers: {
-            Authorization: `Bearer ${token.token}`,
-          },
-        }
-      );
-      console.log(data);
+      const { data } = await APIClient.post("/api/clients", final_data, {
+        headers: {
+          Authorization: `Bearer ${token.token}`,
+        },
+      });
+      router.push("/a/clients");
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error);
+        handleOpen();
       }
     } finally {
       setLoading(false);
@@ -235,37 +250,7 @@ export default function NewClientForm() {
                       }}
                     />
                   </Box>
-                  <Box width={"100%"}>
-                    <InputLabel shrink htmlFor={`contacts[${index}].phone`}>
-                      Phone number
-                    </InputLabel>
-                    <TextInputField
-                      {...register(`contacts[${index}].phone`)}
-                      variant="outlined"
-                      color="secondary"
-                      sx={{
-                        bgcolor: (theme) => theme.palette.background.paper,
-                      }}
-                      size="small"
-                      type={"text"}
-                      error={errors?.contacts?.[index]?.phone ? true : false}
-                      helperText={
-                        errors?.contacts?.[index]?.phone
-                          ? errors?.contacts?.[index]?.phone?.message
-                          : null
-                      }
-                      fullWidth
-                      placeholder="Coca-Cola"
-                      InputProps={{
-                        style: { fontSize: 14 },
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <Phone fontSize="small" />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Box>
+
                   <Box width={"inherit"}>
                     <InputLabel shrink htmlFor={`contacts[${index}].position`}>
                       Fonction
@@ -442,6 +427,16 @@ export default function NewClientForm() {
           Enregistrer
         </LoadingButton>
       </Stack>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          variant="filled"
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          There are errors in the form!
+        </Alert>
+      </Snackbar>
     </>
   );
 }

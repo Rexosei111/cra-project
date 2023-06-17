@@ -20,6 +20,8 @@ import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 
 import { Edit } from "@mui/icons-material";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -42,22 +44,14 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicClientTable() {
-  const [page, setPage] = React.useState(0);
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    // setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+export default function BasicClientTable({ data, entity = "clients" }) {
+  const router = useRouter();
   return (
     <>
       <TableContainer component={Paper} elevation={0}>
         <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
           <TableBody>
-            {rows.map((row) => (
+            {data.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{
@@ -80,14 +74,14 @@ export default function BasicClientTable() {
                         fontSize={14}
                         color={(theme) => theme.palette.secondary.main}
                       >
-                        {row.name}
+                        {row?.name}
                       </Typography>
                       <Typography
                         variant="subtitle2"
                         fontSize={11}
                         color={(theme) => theme.palette.text.secondary}
                       >
-                        {row.name}
+                        {row?.siren}
                       </Typography>
                     </Box>
                   </Stack>
@@ -105,7 +99,7 @@ export default function BasicClientTable() {
                     }}
                     startIcon={<GroupOutlinedIcon fontSize="small" />}
                   >
-                    {row.calories} consultants
+                    {row?.consultants?.length} consultants
                   </Button>
                 </TableCell>
                 <TableCell align="center">
@@ -123,7 +117,7 @@ export default function BasicClientTable() {
                     }}
                     startIcon={<AssignmentOutlinedIcon fontSize="small" />}
                   >
-                    {row.fat} missions
+                    {row?.missions?.length} missions
                   </Button>
                 </TableCell>
                 <TableCell align="center">
@@ -139,6 +133,8 @@ export default function BasicClientTable() {
                     disableElevation
                     variant="text"
                     color="secondary"
+                    component={Link}
+                    href={`/a/${entity}/${row?.id}/edit`}
                     size="small"
                     sx={{ textTransform: "capitalize" }}
                     startIcon={<Edit fontSize="small" />}
@@ -151,15 +147,6 @@ export default function BasicClientTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        // rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        // rowsPerPage={rowsPerPage}
-        page={1}
-        onPageChange={handleChangePage}
-        // onRowsPerPageChange={handleChangeRowsPerPage}
-      />
     </>
   );
 }

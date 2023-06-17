@@ -14,11 +14,7 @@ export default function NewClientPage({ title }) {
     </>
   );
 }
-NewClientPage.getInitialProps = async (context) => {
-  return {
-    title: "Nouveau client",
-  };
-};
+
 NewClientPage.getLayout = (page) => {
-  return <AgencyLayout title={page.props?.title}>{page}</AgencyLayout>;
+  return <AgencyLayout title={"Nouveau client"}>{page}</AgencyLayout>;
 };

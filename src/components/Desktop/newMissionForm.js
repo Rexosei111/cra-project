@@ -13,7 +13,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios, { isAxiosError } from "axios";
 import useToken from "@/hooks/token";
@@ -33,6 +33,7 @@ import {
   Work,
 } from "@mui/icons-material";
 import EuroIcon from "@mui/icons-material/Euro";
+import { APIClient } from "@/utils/axios";
 
 const contactSchema = yup.object({
   name: yup.string().required("This field is required"),
@@ -43,13 +44,14 @@ const contactSchema = yup.object({
     .required("Email is required"),
   receiveCra: yup.boolean().required().default(false),
 });
-const newClientSchema = yup
+const newMissionSchema = yup
   .object({
     name: yup.string().required(),
-    siren: yup.string().required(),
+    // siren: yup.string().required(),
     contacts: yup.array().of(contactSchema),
     automaticSending: yup.boolean().default(true),
     needManagerValisation: yup.boolean().default(false),
+    client: yup.string().required(),
   })
   .required();
 
@@ -76,41 +78,68 @@ export const TextInputField = styled(TextField)({
 
 export default function NewMissionForm() {
   const [contacts, setContacts] = useState([]);
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [token, setToken] = useState("token", null);
+  const [token, setToken] = useToken("token", null);
   const {
     register,
     control,
+    setValue,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
-    resolver: yupResolver(newClientSchema),
+    resolver: yupResolver(newMissionSchema),
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "contacts",
   });
+  useEffect(() => {
+    getClients();
+  }, []);
   const getClients = async () => {
     try {
-      const { data } = await axios.get("", {
+      const { data } = await APIClient.get("/api/clients", {
         headers: {
           Authorization: `Bearer ${token?.token}`,
         },
       });
-      console.log(data);
+      console.log(data["hydra:member"]);
+      setClients(data["hydra:member"]);
     } catch (error) {
       if (isAxiosError(error)) {
         console.log(error);
       }
     }
   };
+  const handleSeleteChange = (e) => {
+    setValue("client", e.target.value.id);
+    const clientContacts = e.target.value?.contacts;
+    if (clientContacts.length > 0) {
+      clientContacts.forEach(async (contact) => {
+        try {
+          const { data } = await APIClient.get(contact, {
+            headers: {
+              Authorization: `Bearer ${token?.token}`,
+            },
+          });
+          console.log(data);
+        } catch (error) {
+          if (isAxiosError(error)) {
+            console.log(error);
+          }
+        }
+      });
+    }
+  };
   const onSubmit = async (data) => {
     const final_data = { ...data, organization: token?.me.organization?.id };
+    console.log(final_data);
     setLoading(true);
     try {
       const { data } = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/clients",
+        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/missions",
         final_data,
         {
           headers: {
@@ -178,6 +207,7 @@ export default function NewMissionForm() {
               variant="outlined"
               color="secondary"
               defaultValue={""}
+              onChange={handleSeleteChange}
               select
               type={"text"}
               size="small"
@@ -187,9 +217,9 @@ export default function NewMissionForm() {
                 bgcolor: (theme) => theme.palette.background.paper,
               }}
             >
-              {selectOptions.map((option, index) => (
+              {clients.map((option, index) => (
                 <MenuItem key={index} value={option}>
-                  {option}
+                  {option.name}
                 </MenuItem>
               ))}
             </TextInputField>

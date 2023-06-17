@@ -1,13 +1,40 @@
 import Listing from "@/components/Desktop/Listing";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
+import BasicClientTable from "@/components/Desktop/clientsTable";
 import SearchBar from "@/components/Desktop/searchBar";
+import useToken from "@/hooks/token";
+import { APIClient } from "@/utils/axios";
 import { Add } from "@mui/icons-material";
 import { Button, Stack, Typography } from "@mui/material";
+import { isAxiosError } from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ConsultantsPage({ title }) {
+  const [token, setToken] = useToken("token", null);
+  const [consultants, setConsultants] = useState([]);
+  const [filteredConsultants, setFilteredConsultants] = useState(consultants);
+  useEffect(() => {
+    async function get_consultants() {
+      console.log("calling");
+      try {
+        const { data } = await APIClient.get("/api/consultants", {
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+          },
+        });
+        console.log(data["hydra:member"]);
+        setConsultants(data["hydra:member"]);
+        setFilteredConsultants(data["hydra:member"]);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          console.log(error);
+        }
+      }
+    }
+    get_consultants();
+  }, []);
   return (
     <>
       <Head>
@@ -19,7 +46,7 @@ export default function ConsultantsPage({ title }) {
           flexDirection={"row"}
           justifyContent={"space-between"}
         >
-          <SearchBar />
+          <SearchBar data={consultants} setData={setFilteredConsultants} />
           <Button
             variant="contained"
             component={Link}
@@ -30,19 +57,13 @@ export default function ConsultantsPage({ title }) {
           >
             New
           </Button>
-          {/* <BasicClientTable /> */}
         </Stack>
-        <Listing />
+        <BasicClientTable data={filteredConsultants} />
       </Stack>
     </>
   );
 }
 
-ConsultantsPage.getInitialProps = async (context) => {
-  return {
-    title: "Consultants",
-  };
-};
 ConsultantsPage.getLayout = (page) => {
-  return <AgencyLayout title={page.props?.title}>{page}</AgencyLayout>;
+  return <AgencyLayout title={"Consultants"}>{page}</AgencyLayout>;
 };
