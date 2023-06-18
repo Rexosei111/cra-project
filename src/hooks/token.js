@@ -85,3 +85,19 @@ const useToken = (key, initialValue) => {
 };
 
 export default useToken;
+
+export const useTokenValidation = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    let token = null;
+    const item = localStorage.getItem("token");
+    if (item !== null) {
+      const data = JSON.parse(item);
+      token = data ? data?.token : null;
+    }
+    if (token === null) {
+      router.push("/auth/login");
+    }
+  }, []);
+};

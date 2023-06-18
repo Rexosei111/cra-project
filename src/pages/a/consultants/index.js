@@ -10,35 +10,25 @@ import { isAxiosError } from "axios";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-
-export default function ConsultantsPage({ title }) {
-  const [token, setToken] = useToken("token", null);
-  const [consultants, setConsultants] = useState([]);
-  const [filteredConsultants, setFilteredConsultants] = useState(consultants);
+import { ErrorComponent, ListingLoadingSkeleton } from "../clients";
+import useSWR from "swr";
+import { fetcher } from "@/utils/swr_fetcher";
+export default function ConsultantsPage() {
+  const [filteredConsultants, setFilteredConsultants] = useState([]);
+  const { data, error, isLoading, mutate, isValidating } = useSWR(
+    () => "/api/consultants",
+    fetcher
+  );
   useEffect(() => {
-    async function get_consultants() {
-      console.log("calling");
-      try {
-        const { data } = await APIClient.get("/api/consultants", {
-          headers: {
-            Authorization: `Bearer ${token.token}`,
-          },
-        });
-        console.log(data["hydra:member"]);
-        setConsultants(data["hydra:member"]);
-        setFilteredConsultants(data["hydra:member"]);
-      } catch (error) {
-        if (isAxiosError(error)) {
-          console.log(error);
-        }
-      }
+    if (typeof data !== "undefined") {
+      setFilteredConsultants(data["hydra:member"]);
     }
-    get_consultants();
-  }, []);
+  }, [data]);
+
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Consultants</title>
       </Head>
       <Stack width={"100%"} flexDirection={"column"} gap={2}>
         <Stack
@@ -46,7 +36,10 @@ export default function ConsultantsPage({ title }) {
           flexDirection={"row"}
           justifyContent={"space-between"}
         >
-          <SearchBar data={consultants} setData={setFilteredConsultants} />
+          <SearchBar
+            data={data ? data["hydra:member"] : []}
+            setData={setFilteredConsultants}
+          />
           <Button
             variant="contained"
             component={Link}
@@ -58,7 +51,9 @@ export default function ConsultantsPage({ title }) {
             New
           </Button>
         </Stack>
-        <BasicClientTable data={filteredConsultants} />
+        {isLoading && <ListingLoadingSkeleton />}
+        {!isLoading && error && <ErrorComponent refresh={mutate} />}
+        {filteredConsultants && <BasicClientTable data={filteredConsultants} />}
       </Stack>
     </>
   );

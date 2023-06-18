@@ -103,15 +103,10 @@ export default function NewClientForm() {
     const final_data = { ...data, organization: token?.me.organization?.id };
     setLoading(true);
     try {
-      const { data } = await APIClient.post("/api/clients", final_data, {
-        headers: {
-          Authorization: `Bearer ${token.token}`,
-        },
-      });
+      const { data } = await APIClient.post("/api/clients", final_data);
       router.push("/a/clients");
     } catch (error) {
       if (isAxiosError(error)) {
-        console.log(error);
         handleOpen();
       }
     } finally {

@@ -18,10 +18,10 @@ import {
 import AcUnitIcon from "@mui/icons-material/AcUnit";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
-
+import testImage from "../../../public/test.svg";
 import { Edit } from "@mui/icons-material";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Image from "next/image";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -44,14 +44,13 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function BasicClientTable({ data, entity = "clients" }) {
-  const router = useRouter();
+export default function BasicClientTable({ data = [], entity = "clients" }) {
   return (
     <>
       <TableContainer component={Paper} elevation={0}>
         <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
           <TableBody>
-            {data.map((row) => (
+            {data?.map((row) => (
               <TableRow
                 key={row.name}
                 sx={{
@@ -66,7 +65,7 @@ export default function BasicClientTable({ data, entity = "clients" }) {
                     justifyContent={"flex-start"}
                   >
                     <IconButton>
-                      <AcUnitIcon fontSize="small" />
+                      <Image src={testImage} fill />
                     </IconButton>
                     <Box>
                       <Typography

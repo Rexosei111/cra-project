@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import axios, { isAxiosError } from "axios";
 import useToken from "@/hooks/token";
 import { AntSwitch } from "../Mobile/switches";
+import { APIClient } from "@/utils/axios";
 
 const loginSchema = yup
   .object({
@@ -63,15 +64,11 @@ export default function LoginForm() {
     setLoading(true);
     const final_data = { username: data.email, password: data.password };
     try {
-      const { data } = await axios.post(
-        process.env.NEXT_PUBLIC_API_BASE_URL + "/api/login_check",
-        final_data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const { data } = await APIClient.post("/api/login_check", final_data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const token_expire_time = +process.env.NEXT_PUBLIC_TOKEN_EXPIRES_IN;
       const currentTime = new Date();
       setToken({

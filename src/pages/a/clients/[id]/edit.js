@@ -41,14 +41,18 @@ import {
 import { AntSwitch } from "@/components/Mobile/switches";
 import { LoadingButton } from "@mui/lab";
 import { isAxiosError } from "axios";
+import { ErrorComponent } from "..";
+import { fetcher } from "@/utils/swr_fetcher";
+import ClientMissionEditForm from "@/components/Desktop/clientMissionEditForm";
+import ClientConsultantsEditForm from "@/components/Desktop/clientConsultantForm";
 
 const ClientLoading = () => {
   return (
     <Stack width={"100%"} flexDirection={"column"} gap={2} minHeight={"80vh"}>
-      <Skeleton variant="rectangular" width={"100%"} height={200} />
-      <Skeleton variant="text" width={"30%"} height={10} />
-      <Skeleton variant="text" width={"65%"} height={10} />
-      <Skeleton variant="rectangular" width={"100%"} height={150} />
+      <Skeleton variant="text" width={"30%"} height={20} />
+      <Skeleton variant="rectangular" width={"100%"} height={120} />
+      <Skeleton variant="text" width={"65%"} height={20} />
+      <Skeleton variant="rectangular" width={"100%"} height={100} />
       <Skeleton variant="rectangular" width={"100%"} height={100} />
     </Stack>
   );
@@ -98,40 +102,19 @@ export default function UpdateClient() {
     control,
     name: "contacts",
   });
-  const clientFetcher = async (endpoint) => {
-    const { data } = await APIClient.get(endpoint, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token?.token}`,
-      },
-    });
-    return data;
-  };
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     () => `/api/clients/${router.query.id}`,
-    clientFetcher
+    fetcher
   );
   useEffect(() => {
     if (data) {
       reset(data);
-      console.log(data?.contacts);
       setContacts(data?.contacts);
     }
   }, [data]);
   if (error) {
-    return (
-      <Stack
-        width={"100%"}
-        height={200}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
-        <Typography variant="subtitle2" fontSize={18} fontWeight={700}>
-          Unable to load client data
-        </Typography>
-      </Stack>
-    );
+    return <ErrorComponent refresh={mutate} />;
   }
   if (isLoading) {
     return <ClientLoading />;
@@ -157,17 +140,11 @@ export default function UpdateClient() {
 
   const onClientSubmit = async (data) => {
     const final_data = { ...data, organization: token?.me.organization?.id };
-    console.log(final_data);
     setClientLoading(true);
     try {
       const { data } = await APIClient.put(
         `/api/clients/${router.query.id}`,
-        final_data,
-        {
-          headers: {
-            Authorization: `Bearer ${token.token}`,
-          },
-        }
+        final_data
       );
       //   router.push("/a/clients");
       console.log(data);
@@ -182,7 +159,7 @@ export default function UpdateClient() {
   };
 
   return (
-    <>
+    <Stack flexDirection={"column"} gap={2}>
       <Paper
         component={"form"}
         action="#"
@@ -475,7 +452,9 @@ export default function UpdateClient() {
           </Alert>
         </Snackbar>
       </Paper>
-    </>
+      <ClientMissionEditForm />
+      <ClientConsultantsEditForm />
+    </Stack>
   );
 }
 

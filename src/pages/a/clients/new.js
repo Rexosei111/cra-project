@@ -4,11 +4,11 @@ import { Typography } from "@mui/material";
 import Head from "next/head";
 import React from "react";
 
-export default function NewClientPage({ title }) {
+export default function NewClientPage() {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Nouveau client</title>
       </Head>
       <NewClientForm />
     </>

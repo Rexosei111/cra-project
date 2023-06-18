@@ -147,63 +147,58 @@ export function ResponsiveDrawer(props) {
               </ListItem>
             ))}
           </List>
-          <Paper
-            component={Stack}
-            flexDirection={"column"}
-            gap={1}
+          <List
+            disablePadding
             sx={{
               mt: "auto",
               width: "100%",
-              // height: "20%",
               borderRadius: 3,
               bgcolor: (theme) => theme.palette.background.default,
             }}
             elevation={0}
           >
-            <Stack
-              flexDirection={"row"}
-              justifyContent={"flex-start"}
-              alignItems={"center"}
-              component={Button}
-              variant="secondary"
-              sx={{ fontSize: 13, textTransform: "capitalize" }}
-              gap={2}
-            >
-              <IconButton>
-                <PeopleOutline fontSize="small" />
-              </IconButton>
-              <Typography fontSize={13}>Utilisateurs</Typography>
-            </Stack>
-            <Stack
-              flexDirection={"row"}
-              justifyContent={"flex-start"}
-              alignItems={"center"}
-              component={Button}
-              variant="secondary"
-              sx={{ fontSize: 13, textTransform: "capitalize" }}
-              gap={2}
-            >
-              <Avatar sx={{ width: 30, height: 30 }}>
-                {token?.me?.firstName?.charAt(0)}
-              </Avatar>
-              <Typography fontSize={13}>{token?.me?.firstName}</Typography>
-            </Stack>
-            <Stack
-              flexDirection={"row"}
-              justifyContent={"flex-start"}
-              alignItems={"center"}
-              component={Button}
-              onClick={logout}
-              variant="secondary"
-              sx={{ fontSize: 13, textTransform: "capitalize" }}
-              gap={2}
-            >
-              <IconButton>
-                <LogoutIcon fontSize="small" />
-              </IconButton>
-              <Typography fontSize={13}>Déconnexion</Typography>
-            </Stack>
-          </Paper>
+            <ListItem disableGutters disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <PeopleOutline fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Utilisateurs"}
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disableGutters disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <Avatar sx={{ width: 30, height: 30 }}>
+                    {token && token?.me?.firstName?.charAt(0)}
+                  </Avatar>
+                </ListItemIcon>
+                <ListItemText
+                  primary={token?.me?.firstName}
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem disableGutters disablePadding>
+              <ListItemButton onClick={logout}>
+                <ListItemIcon>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={"Déconnexion"}
+                  primaryTypographyProps={{
+                    fontSize: 14,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </List>
         </Stack>
       </Box>
     );

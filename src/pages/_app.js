@@ -7,13 +7,14 @@ import { CacheProvider } from "@emotion/react";
 import theme from "../theme";
 import createEmotionCache from "../createEmotionCache";
 import "../styles/globals.css";
-import { useTokenRefresh } from "@/hooks/token";
+import { useTokenRefresh, useTokenValidation } from "@/hooks/token";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 export default function MyApp(props) {
   const isRefreshing = useTokenRefresh();
+  useTokenValidation();
   const {
     Component,
     emotionCache = clientSideEmotionCache,
