@@ -1,5 +1,5 @@
 import AgencyLayout from "@/components/Desktop/agencyLayout";
-import BasicClientTable from "@/components/Desktop/clientsTable";
+import BasicClientTable from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
 import { Add } from "@mui/icons-material";
 import { Box, Button, Paper, Skeleton, Stack, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import { fetcher } from "@/utils/swr_fetcher";
 import useSWR from "swr";
 import { useRouter } from "next/router";
+import NoData from "@/components/noData";
 
 export const ListingLoadingSkeleton = () => {
   return (
@@ -93,7 +94,15 @@ export default function ClientsPage() {
         </Stack>
         {isLoading && <ListingLoadingSkeleton />}
         {!isLoading && error && <ErrorComponent refresh={mutate} />}
-        {filteredClients && <BasicClientTable data={filteredClients} />}
+        {data && data["hydra:totalItems"] === 0 && (
+          <NoData
+            message={"Your organisation does not have a client yet."}
+            url={"/a/clients/new"}
+          />
+        )}
+        {data && data["hydra:totalItems"] > 0 && (
+          <BasicClientTable data={filteredClients} />
+        )}
       </Stack>
     </>
   );

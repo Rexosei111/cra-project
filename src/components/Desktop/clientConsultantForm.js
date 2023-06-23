@@ -10,10 +10,58 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useSWR from "swr";
 
+const ConsultantsDisplay = ({ consultant }) => {
+  return (
+    <>
+      <Stack width={"100%"} gap={2} flexDirection={"row"} alignItems={"center"}>
+        <Stack alignItems={"flex-start"} width={"100%"}>
+          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+            <IconButton>
+              <Image src={clientImage} fill alt="client logo" />
+            </IconButton>
+            <Typography variant="subtitle2" fontSize={14} fontWeight={700}>
+              {consultant?.name}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack width={"100%"} alignItems={"flex-start"}>
+          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+            <IconButton>
+              <PeopleOutline fontSize="small" />
+            </IconButton>
+            <Typography
+              variant="subtitle2"
+              fontSize={14}
+              fontWeight={400}
+              color={(theme) => theme.palette.text.secondary}
+            >
+              {consultant?.missions?.length} consultants
+            </Typography>
+          </Stack>
+        </Stack>
+        <Stack width={"100%"} alignItems={"center"}>
+          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+            <Button
+              variant="text"
+              color="secondary"
+              sx={{
+                textTransform: "capitalize",
+              }}
+              startIcon={<Edit fontSize="small" />}
+            >
+              Editer
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
+    </>
+  );
+};
 const ConsultantsLoading = () => {
   return (
     <Stack
@@ -54,10 +102,32 @@ export default function ClientConsultantsEditForm() {
           {consultantsOpen ? <ExpandLess /> : <ExpandMore />}
         </IconButton>
       </Stack>
-      {/* <Divider sx={{ my: 1 }} /> */}
       <Collapse in={consultantsOpen} timeout="auto" unmountOnExit>
         {isLoading && <ConsultantsLoading />}
         {!isLoading && error && <ErrorComponent refresh={mutate} />}
+        {data && data["hydra:member"].length > 0 && (
+          <Stack
+            flexDirection={"column"}
+            overflow={"auto"}
+            gap={2}
+            p={2}
+            minWidth={750}
+          >
+            {data["hydra:member"].map((consultant, index) => (
+              <ConsultantsDisplay consultant={consultant} key={index} />
+            ))}
+          </Stack>
+        )}
+        <Stack alignItems={"center"} justifyContent={"center"}>
+          <Typography
+            alignSelf={"center"}
+            variant="caption"
+            component={Link}
+            href="/a/consultants/new"
+          >
+            Ajouter un consultant pour Le Figaro
+          </Typography>
+        </Stack>
       </Collapse>
     </Paper>
   );

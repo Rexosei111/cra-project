@@ -1,5 +1,5 @@
 import AgencyLayout from "@/components/Desktop/agencyLayout";
-import BasicClientTable from "@/components/Desktop/clientsTable";
+import BasicClientTable from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
 import { Add } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";

@@ -1,6 +1,6 @@
 import Listing from "@/components/Desktop/Listing";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
-import BasicClientTable from "@/components/Desktop/clientsTable";
+import BasicClientTable from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
 import useToken from "@/hooks/token";
 import { APIClient } from "@/utils/axios";
@@ -13,6 +13,9 @@ import React, { useEffect, useState } from "react";
 import { ErrorComponent, ListingLoadingSkeleton } from "../clients";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr_fetcher";
+import RetryError from "@/components/Errors/ErrorWithRetry";
+import TableListingSkeleton from "@/components/Loading/ListingSkeleton";
+import NoData from "@/components/noData";
 export default function ConsultantsPage() {
   const [filteredConsultants, setFilteredConsultants] = useState([]);
   const { data, error, isLoading, mutate, isValidating } = useSWR(
@@ -51,9 +54,17 @@ export default function ConsultantsPage() {
             New
           </Button>
         </Stack>
-        {isLoading && <ListingLoadingSkeleton />}
-        {!isLoading && error && <ErrorComponent refresh={mutate} />}
-        {filteredConsultants && <BasicClientTable data={filteredConsultants} />}
+        {isLoading && <TableListingSkeleton />}
+        {!isLoading && error && <RetryError refresh={mutate} />}
+        {data && data["hydra:totalItems"] === 0 && (
+          <NoData
+            message={"Your organisation does not have a consultant yet."}
+            url={"/a/consultants/new"}
+          />
+        )}
+        {data && data["hydra:totalItems"] > 0 && (
+          <BasicClientTable data={filteredConsultants} />
+        )}
       </Stack>
     </>
   );

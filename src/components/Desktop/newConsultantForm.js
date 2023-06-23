@@ -5,6 +5,7 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
+  InputLabel,
   MenuItem,
   Paper,
   Stack,
@@ -20,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { LoadingButton } from "@mui/lab";
+import { APIClient } from "@/utils/axios";
 
 // const contactSchema = yup.object({
 //   name: yup.string().required("This field is required"),
@@ -32,13 +34,13 @@ import { LoadingButton } from "@mui/lab";
 // });
 const newClientSchema = yup
   .object({
-    firstname: yup.string().required(),
-    lastname: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().email().required(),
+    plainPassword: yup.string().required(),
   })
   .required();
 
-const selectOptions = ["Dernier jour du mois"];
 const TextInputField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#362B6A",
@@ -60,6 +62,7 @@ const TextInputField = styled(TextField)({
 });
 export default function NewConsultantForm() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const {
     register,
     control,
@@ -71,26 +74,19 @@ export default function NewConsultantForm() {
   const [token, setToken] = useToken("token", "");
 
   const onSubmit = async (data) => {
-    const final_data = { ...data, organization: token?.me.organization?.id };
-    // setLoading(true);
-    // try {
-    //   const { data } = await axios.post(
-    //     process.env.NEXT_PUBLIC_API_BASE_URL + "/api/clients",
-    //     final_data,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token.token}`,
-    //       },
-    //     }
-    //   );
-    //   console.log(data);
-    // } catch (error) {
-    //   if (isAxiosError(error)) {
-    //     console.log(error);
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
+    const final_data = { ...data };
+    setLoading(true);
+    try {
+      const { data } = await APIClient.post("/api/consultants", final_data);
+      console.log(data);
+      router.push("/a/consultants");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.log(error);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -105,41 +101,78 @@ export default function NewConsultantForm() {
         elevation={0}
       >
         <Stack flexDirection={"column"} gap={3}>
-          <TextInputField
-            {...register("firstname")}
-            variant="outlined"
-            type={"text"}
-            label="Nom"
-            error={errors.firstname ? true : false}
-            helperText={errors.firstname ? errors.firstname?.message : null}
-            fullWidth
-            focused
-            placeholder="Coca-Cola"
-          />
-          <TextInputField
-            {...register("lastname")}
-            variant="outlined"
-            color="secondary"
-            focused
-            type={"text"}
-            label="Prénom"
-            error={errors.lastname ? true : false}
-            helperText={errors.lastname ? errors.lastname?.message : null}
-            fullWidth
-            placeholder="Coca-Cola"
-          />
-          <TextInputField
-            {...register("email")}
-            variant="outlined"
-            color="secondary"
-            focused
-            type={"email"}
-            label="Email"
-            error={errors.email ? true : false}
-            helperText={errors.email ? errors.email?.message : null}
-            fullWidth
-            placeholder="example@gmail.com"
-          />
+          <Box>
+            <InputLabel shrink htmlFor="firstName">
+              Nom
+            </InputLabel>
+            <TextInputField
+              {...register("firstName")}
+              id="firstName"
+              variant="outlined"
+              type={"text"}
+              // label="Nom"
+              error={errors.firstname ? true : false}
+              helperText={errors.firstname ? errors.firstname?.message : null}
+              fullWidth
+              // focused
+              placeholder="Coca-Cola"
+            />
+          </Box>
+          <Box>
+            <InputLabel shrink htmlFor="lastName">
+              Prénom
+            </InputLabel>
+            <TextInputField
+              {...register("lastName")}
+              variant="outlined"
+              id="lastName"
+              color="secondary"
+              type={"text"}
+              // label="Prénom"
+              error={errors.lastname ? true : false}
+              helperText={errors.lastname ? errors.lastname?.message : null}
+              fullWidth
+              placeholder="Coca-Cola"
+            />
+          </Box>
+          <Box>
+            <InputLabel shrink htmlFor="email">
+              Email
+            </InputLabel>
+            <TextInputField
+              {...register("email")}
+              variant="outlined"
+              id="email"
+              color="secondary"
+              // focused
+              type={"email"}
+              // label="Email"
+              error={errors.email ? true : false}
+              helperText={errors.email ? errors.email?.message : null}
+              fullWidth
+              placeholder="example@gmail.com"
+            />
+          </Box>
+          <Box>
+            <InputLabel shrink htmlFor="plainPassword">
+              Password
+            </InputLabel>
+            <TextInputField
+              {...register("plainPassword")}
+              variant="outlined"
+              color="secondary"
+              id="plainPassword"
+              // focused
+              type={"text"}
+              label="Password"
+              error={errors.plainPassword ? true : false}
+              helperText={
+                errors.plainPassword ? errors.plainPassword?.message : null
+              }
+              fullWidth
+              placeholder=""
+            />
+          </Box>
         </Stack>
       </Paper>
       <Stack justifyContent={"center"} alignItems={"center"} my={2}>
