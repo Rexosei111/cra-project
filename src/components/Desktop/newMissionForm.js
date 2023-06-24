@@ -34,6 +34,7 @@ import {
 } from "@mui/icons-material";
 import EuroIcon from "@mui/icons-material/Euro";
 import { APIClient } from "@/utils/axios";
+import DefaultWorkingDays from "./defaultDays";
 
 const contactSchema = yup.object({
   name: yup.string().required("This field is required"),
@@ -44,12 +45,14 @@ const contactSchema = yup.object({
     .required("Email is required"),
   receiveCra: yup.boolean().required().default(false),
 });
+
 const newMissionSchema = yup
   .object({
     name: yup.string().required(),
     dailyRate: yup.number().default(0),
     vatRate: yup.number().default(0),
     sendCraDate: yup.string(),
+    defaultWorkingDay: yup.object({}),
     automaticSending: yup.boolean().default(true),
     needManagerValisation: yup.boolean().default(false),
     client: yup.string().required(),
@@ -86,6 +89,10 @@ export default function NewMissionForm() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useToken("token", null);
+  const [workingDaysOpen, setWorkingDaysOpen] = useState(false);
+  const handleWorkingDaysOpen = () => {
+    setWorkingDaysOpen(!workingDaysOpen);
+  };
   const router = useRouter();
   const {
     register,
@@ -93,6 +100,7 @@ export default function NewMissionForm() {
     setValue,
     handleSubmit,
     reset,
+    getValues,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(newMissionSchema),
@@ -228,7 +236,7 @@ export default function NewMissionForm() {
                 variant="outlined"
                 color="secondary"
                 {...register("vatRate")}
-                focused
+                // focused
                 size="small"
                 type={"text"}
                 InputProps={{
@@ -245,7 +253,7 @@ export default function NewMissionForm() {
                     </InputAdornment>
                   ),
                 }}
-              ></TextInputField>
+              />
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <TextInputField
@@ -314,6 +322,7 @@ export default function NewMissionForm() {
               variant="contained"
               color="secondary"
               // disabled
+              onClick={handleWorkingDaysOpen}
               disableElevation
               endIcon={<ArrowCircleRight />}
             >
@@ -322,6 +331,11 @@ export default function NewMissionForm() {
           </Box>
         </Stack>
       </Paper>
+      <DefaultWorkingDays
+        open={workingDaysOpen}
+        setOpen={setWorkingDaysOpen}
+        setWorkingDays={setValue}
+      />
       <Stack justifyContent={"center"} alignItems={"center"} my={2}>
         <LoadingButton
           //   loadingPosition="start"

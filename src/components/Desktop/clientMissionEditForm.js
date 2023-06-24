@@ -54,18 +54,18 @@ const MissionDisplay = ({ mission }) => {
           </Stack>
         </Stack>
         <Stack width={"100%"} alignItems={"center"}>
-          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
-            <Button
-              variant="text"
-              color="secondary"
-              sx={{
-                textTransform: "capitalize",
-              }}
-              startIcon={<Edit fontSize="small" />}
-            >
-              Editer
-            </Button>
-          </Stack>
+          <Button
+            variant="text"
+            color="secondary"
+            component={Link}
+            href={`/a/missions/${mission?.id}/edit`}
+            sx={{
+              textTransform: "capitalize",
+            }}
+            startIcon={<Edit fontSize="small" />}
+          >
+            Editer
+          </Button>
         </Stack>
       </Stack>
     </>

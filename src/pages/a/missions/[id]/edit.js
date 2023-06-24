@@ -32,6 +32,8 @@ import {
 import EuroIcon from "@mui/icons-material/Euro";
 import { AntSwitch } from "@/components/Mobile/switches";
 import { APIClient } from "@/utils/axios";
+import DefaultWorkingDays from "@/components/Desktop/defaultDays";
+import { isAxiosError } from "axios";
 
 const selectOptions = [
   { name: "Premier jour du mois suivant", value: "firstDayOfNextMonth" },
@@ -52,8 +54,24 @@ function findOptionByValue(value) {
 const editMissionSchema = yup
   .object({
     name: yup.string().required(),
-    dailyRate: yup.number().default(0),
-    vatRate: yup.number().default(0),
+    dailyRate: yup
+      .number()
+      .transform((value, originalValue) => {
+        // The `value` parameter contains the value as a string
+        // The `originalValue` parameter contains the original value before being transformed
+        return parseFloat(value); // Convert the string value to a decimal number
+      })
+      .positive()
+      .default(0),
+    vatRate: yup
+      .number()
+      .transform((value, originalValue) => {
+        // The `value` parameter contains the value as a string
+        // The `originalValue` parameter contains the original value before being transformed
+        return parseFloat(value); // Convert the string value to a decimal number
+      })
+      .positive()
+      .default(0),
     sendCraDate: yup.string(),
     automaticSending: yup.boolean().default(true),
     needManagerValidation: yup.boolean().default(false),
@@ -63,10 +81,12 @@ const editMissionSchema = yup
 export default function UpdateMission() {
   const router = useRouter();
   const [infoOpen, setInfoOpen] = useState(false);
-  const [sendCra, setSendCra] = useState("");
   const [loading, setLoading] = useState(false);
   const [defaultDaysOpen, setDefaultDaysOpen] = useState(false);
-
+  const [workingDaysOpen, setWorkingDaysOpen] = useState(false);
+  const handleWorkingDaysOpen = () => {
+    setWorkingDaysOpen(!workingDaysOpen);
+  };
   const {
     register,
     control,
@@ -78,10 +98,7 @@ export default function UpdateMission() {
   } = useForm({
     resolver: yupResolver(editMissionSchema),
   });
-  const handleSendCra = (e, value) => {
-    console.log(e, value);
-    setValue("sendCra", e.target.value);
-  };
+
   const handleInfoOpen = () => {
     setInfoOpen(!infoOpen);
   };
@@ -102,7 +119,6 @@ export default function UpdateMission() {
 
   const onSubmit = async (data) => {
     const final_data = { ...data };
-    console.log(final_data);
     setLoading(true);
     try {
       const { data } = await APIClient.put(
@@ -138,7 +154,6 @@ export default function UpdateMission() {
             {...register("name")}
             variant="outlined"
             type={"text"}
-            // label="Nom du client"
             error={errors.name ? true : false}
             helperText={errors.name ? errors.name?.message : null}
             fullWidth
@@ -159,9 +174,8 @@ export default function UpdateMission() {
               placeholder="Client"
               variant="outlined"
               color="secondary"
-              disabled
-              defaultValue={data?.client?.name}
-              //   onChange={handleSeleteChange}
+              disabled={data && data?.client?.name ? true : false}
+              value={data?.client?.name}
               //   select
               type={"text"}
               size="small"
@@ -322,6 +336,7 @@ export default function UpdateMission() {
                 color="secondary"
                 // disabled
                 disableElevation
+                onClick={handleWorkingDaysOpen}
                 endIcon={<ArrowCircleRight />}
               >
                 Paramétrer les jours travaillés
@@ -329,6 +344,7 @@ export default function UpdateMission() {
             </Box>
           </Collapse>
         </Stack>
+
         <Stack justifyContent={"center"} alignItems={"center"} my={2}>
           <LoadingButton
             //   loadingPosition="start"
@@ -344,6 +360,12 @@ export default function UpdateMission() {
           </LoadingButton>
         </Stack>
       </Paper>
+      <DefaultWorkingDays
+        open={workingDaysOpen}
+        setOpen={setWorkingDaysOpen}
+        defaultValues={getValues()?.defaultWorkingDay}
+        setWorkingDays={setValue}
+      />
     </>
   );
 }
