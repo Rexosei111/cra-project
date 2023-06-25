@@ -44,6 +44,8 @@ import { isAxiosError } from "axios";
 import { fetcher } from "@/utils/swr_fetcher";
 import { ErrorComponent } from "@/pages/a/clients";
 import NewContactDialogue from "./newContactDialogue";
+import ClientMissionEditForm from "./clientMissionEditForm";
+import ClientConsultantsEditForm from "./clientConsultantForm";
 
 const ClientLoading = () => {
   return (
@@ -111,6 +113,7 @@ export default function ClientUpdateForm() {
   useEffect(() => {
     if (data) {
       reset(data);
+      console.log(data);
       setContacts(data?.contacts);
     }
   }, [data]);
@@ -190,7 +193,7 @@ export default function ClientUpdateForm() {
   };
 
   return (
-    <>
+    <Stack flexDirection={"column"} gap={2} width={"100%"}>
       <Paper
         component={"form"}
         action="#"
@@ -473,11 +476,17 @@ export default function ClientUpdateForm() {
           </Alert>
         </Snackbar>
       </Paper>
+      <ClientMissionEditForm
+        missions={data?.missions}
+        clientName={data?.name}
+        clientId={data?.id}
+      />
+      <ClientConsultantsEditForm clientName={data?.name} />
       <NewContactDialogue
         newClientOpen={newClientOpen}
         handleNewClientOpen={handleNewClientOpen}
         mutate={mutate}
       />
-    </>
+    </Stack>
   );
 }

@@ -1,7 +1,14 @@
 import { ErrorComponent } from "@/pages/a/clients";
 import { fetcher } from "@/utils/swr_fetcher";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
+  Edit,
+  ExpandLess,
+  ExpandMore,
+  PeopleOutline,
+  Task,
+} from "@mui/icons-material";
+import {
+  Button,
   Collapse,
   Divider,
   IconButton,
@@ -14,6 +21,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import useSWR from "swr";
+import consultantImage from "../../../public/test.svg";
+import Image from "next/image";
 
 const ConsultantsDisplay = ({ consultant }) => {
   return (
@@ -22,17 +31,17 @@ const ConsultantsDisplay = ({ consultant }) => {
         <Stack alignItems={"flex-start"} width={"100%"}>
           <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
             <IconButton>
-              <Image src={clientImage} fill alt="client logo" />
+              <Image src={consultantImage} fill alt="client logo" />
             </IconButton>
             <Typography variant="subtitle2" fontSize={14} fontWeight={700}>
-              {consultant?.name}
+              {consultant?.firstName} {consultant?.lastName}
             </Typography>
           </Stack>
         </Stack>
         <Stack width={"100%"} alignItems={"flex-start"}>
-          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+          <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
             <IconButton>
-              <PeopleOutline fontSize="small" />
+              <Task fontSize="small" />
             </IconButton>
             <Typography
               variant="subtitle2"
@@ -40,7 +49,7 @@ const ConsultantsDisplay = ({ consultant }) => {
               fontWeight={400}
               color={(theme) => theme.palette.text.secondary}
             >
-              {consultant?.missions?.length} consultants
+              {consultant?.missions?.length} missions
             </Typography>
           </Stack>
         </Stack>
@@ -79,7 +88,7 @@ const ConsultantsLoading = () => {
   );
 };
 
-export default function ClientConsultantsEditForm() {
+export default function ClientConsultantsEditForm({ clientName }) {
   const router = useRouter();
   const [consultantsOpen, setConsultantsOpen] = useState(false);
   const { data, error, isLoading, mutate } = useSWR(
@@ -125,7 +134,7 @@ export default function ClientConsultantsEditForm() {
             component={Link}
             href="/a/consultants/new"
           >
-            Ajouter un consultant pour Le Figaro
+            Ajouter un consultant pour {clientName}
           </Typography>
         </Stack>
       </Collapse>

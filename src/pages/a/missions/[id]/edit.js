@@ -34,6 +34,8 @@ import { AntSwitch } from "@/components/Mobile/switches";
 import { APIClient } from "@/utils/axios";
 import DefaultWorkingDays from "@/components/Desktop/defaultDays";
 import { isAxiosError } from "axios";
+import ConsultantMissionForm from "@/components/Desktop/consultantMissions";
+import MissionConsultantsForm from "@/components/Desktop/missionConsultants";
 
 const selectOptions = [
   { name: "Premier jour du mois suivant", value: "firstDayOfNextMonth" },
@@ -118,7 +120,11 @@ export default function UpdateMission() {
   }, [data]);
 
   const onSubmit = async (data) => {
-    const final_data = { ...data };
+    const { consultants, ...rest } = data;
+    const final_data = {
+      ...rest,
+      consultants: [...consultants.map((consultant) => consultant.id)],
+    };
     setLoading(true);
     try {
       const { data } = await APIClient.put(
@@ -360,6 +366,8 @@ export default function UpdateMission() {
           </LoadingButton>
         </Stack>
       </Paper>
+      <MissionConsultantsForm mission={data} refresh={mutate} />
+
       <DefaultWorkingDays
         open={workingDaysOpen}
         setOpen={setWorkingDaysOpen}

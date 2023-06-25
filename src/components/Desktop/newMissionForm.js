@@ -89,6 +89,7 @@ export default function NewMissionForm() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useToken("token", null);
+  const [defaultClient, setDefaultClient] = useState(null);
   const [workingDaysOpen, setWorkingDaysOpen] = useState(false);
   const handleWorkingDaysOpen = () => {
     setWorkingDaysOpen(!workingDaysOpen);
@@ -109,6 +110,19 @@ export default function NewMissionForm() {
   useEffect(() => {
     getClients();
   }, []);
+
+  useEffect(() => {
+    if (router.isReady && router.query?.clientId && clients) {
+      const initialClient = clients?.filter((client) => {
+        if (client.id === router.query.clientId) {
+          return client;
+        } else {
+          return null;
+        }
+      });
+      setDefaultClient(initialClient[0]?.id);
+    }
+  }, [router.isReady, clients]);
   const getClients = async () => {
     try {
       const { data } = await APIClient.get("/api/clients");
@@ -120,8 +134,10 @@ export default function NewMissionForm() {
     }
   };
   const handleSeleteChange = (e) => {
-    setValue("client", e.target.value.id);
-    const clientContacts = e.target.value?.contacts;
+    console.log(e.target.value);
+    setValue("client", e.target.value);
+    setDefaultClient(e.target.value);
+    // const clientContacts = e.target.value?.contacts;
   };
   const onSubmit = async (data) => {
     const final_data = { ...data, organization: token?.me.organization?.id };
@@ -158,14 +174,12 @@ export default function NewMissionForm() {
             {...register("name")}
             variant="outlined"
             type={"text"}
-            // label="Nom du client"
             error={errors.name ? true : false}
             helperText={errors.name ? errors.name?.message : null}
             fullWidth
             placeholder="Coca-Cola"
           />
         </Box>
-        {/* <Divider sx={{ my: 3 }} variant="middle" /> */}
         <Box width={"100%"} mt={3}>
           <Typography
             gutterBottom
@@ -180,7 +194,7 @@ export default function NewMissionForm() {
               placeholder="Client"
               variant="outlined"
               color="secondary"
-              defaultValue={""}
+              value={defaultClient ? defaultClient : ""}
               onChange={handleSeleteChange}
               select
               type={"text"}
@@ -192,7 +206,13 @@ export default function NewMissionForm() {
               }}
             >
               {clients.map((option, index) => (
-                <MenuItem key={index} value={option}>
+                <MenuItem
+                  key={index}
+                  value={option.id}
+                  selected={
+                    defaultClient && defaultClient === option?.id ? true : false
+                  }
+                >
                   {option.name}
                 </MenuItem>
               ))}

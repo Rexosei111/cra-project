@@ -10,8 +10,8 @@ export default function UpdateClient() {
   return (
     <Stack flexDirection={"column"} gap={2}>
       <ClientUpdateForm />
-      <ClientMissionEditForm />
-      <ClientConsultantsEditForm />
+      {/* <ClientMissionEditForm />
+      <ClientConsultantsEditForm /> */}
     </Stack>
   );
 }

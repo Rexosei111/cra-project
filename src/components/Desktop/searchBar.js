@@ -3,12 +3,19 @@ import React from "react";
 import { TextInputField } from "./newClient";
 import { Search } from "@mui/icons-material";
 
-export default function SearchBar({ setData, data }) {
+export default function SearchBar({ setData, data, searchFields = ["name"] }) {
   const handleFilter = (e) => {
     // console.log(e.target.value);
-    const filteredResults = data.filter((item) =>
-      item.name.toLowerCase().includes(e.target.value?.toLowerCase())
-    );
+    const filteredResults = data.filter((item) => {
+      const searchValue = e.target.value?.toLowerCase();
+
+      // Define the object keys you want to use for filtering
+
+      // Check if any of the filter keys contain the search value
+      return searchFields.some((key) =>
+        item[key]?.toLowerCase().includes(searchValue)
+      );
+    });
     setData(filteredResults);
   };
   return (

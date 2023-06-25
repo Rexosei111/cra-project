@@ -88,13 +88,17 @@ const MissionsLoading = () => {
   );
 };
 
-export default function ClientMissionEditForm() {
+export default function ClientMissionEditForm({
+  missions = [],
+  clientName,
+  clientId,
+}) {
   const router = useRouter();
   const [missionOpen, setMissionOpen] = useState(false);
-  const { data, error, isLoading, mutate } = useSWR(
-    () => (router.isReady && missionOpen ? "/api/missions" : null),
-    fetcher
-  );
+  // const { data, error, isLoading, mutate } = useSWR(
+  //   () => (router.isReady && missionOpen ? "/api/missions" : null),
+  //   fetcher
+  // );
 
   const handleMissionOpen = () => {
     setMissionOpen(!missionOpen);
@@ -112,9 +116,9 @@ export default function ClientMissionEditForm() {
         </IconButton>
       </Stack>
       <Collapse in={missionOpen} timeout="auto" unmountOnExit>
-        {isLoading && <MissionsLoading />}
-        {!isLoading && error && <ErrorComponent refresh={mutate} />}
-        {data && data["hydra:member"].length > 0 && (
+        {/* {isLoading && <MissionsLoading />}
+        {!isLoading && error && <ErrorComponent refresh={mutate} />} */}
+        {missions && missions?.length > 0 && (
           <Stack
             flexDirection={"column"}
             overflow={"auto"}
@@ -122,7 +126,7 @@ export default function ClientMissionEditForm() {
             p={2}
             minWidth={750}
           >
-            {data["hydra:member"].map((mission, index) => (
+            {missions?.map((mission, index) => (
               <MissionDisplay mission={mission} key={index} />
             ))}
           </Stack>
@@ -132,9 +136,9 @@ export default function ClientMissionEditForm() {
             alignSelf={"center"}
             variant="caption"
             component={Link}
-            href="/a/missions/new"
+            href={`/a/missions/new?clientId=${clientId}`}
           >
-            Ajouter une mission pour Le Figaro
+            Ajouter une mission pour {clientName}
           </Typography>
         </Stack>
       </Collapse>

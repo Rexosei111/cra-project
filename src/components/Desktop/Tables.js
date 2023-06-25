@@ -119,14 +119,14 @@ export default function BasicClientTable({ data = [], entity = "clients" }) {
                     {row?.missions?.length} missions
                   </Button>
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <Chip
                     label={`${row.carbs} CRA Validés`}
                     variant="filled"
                     color="default"
                     size="small"
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell align="center">
                   <Button
                     disableElevation
@@ -289,6 +289,14 @@ export function BasicConsultantsTable({ data = [], entity = "consultants" }) {
                   >
                     {row?.missions?.length} missions
                   </Button>
+                </TableCell>
+                <TableCell align="center">
+                  <Chip
+                    label={`${row?.cras?.length} CRA Validés`}
+                    variant="filled"
+                    color="default"
+                    size="small"
+                  />
                 </TableCell>
                 {/* <TableCell align="center">
                   <Button

@@ -1,6 +1,8 @@
 import Listing from "@/components/Desktop/Listing";
 import AgencyLayout from "@/components/Desktop/agencyLayout";
-import BasicClientTable from "@/components/Desktop/Tables";
+import BasicClientTable, {
+  BasicConsultantsTable,
+} from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
 import useToken from "@/hooks/token";
 import { APIClient } from "@/utils/axios";
@@ -42,6 +44,7 @@ export default function ConsultantsPage() {
           <SearchBar
             data={data ? data["hydra:member"] : []}
             setData={setFilteredConsultants}
+            searchFields={["firstName", "lastName"]}
           />
           <Button
             variant="contained"
@@ -63,7 +66,7 @@ export default function ConsultantsPage() {
           />
         )}
         {data && data["hydra:totalItems"] > 0 && (
-          <BasicClientTable data={filteredConsultants} />
+          <BasicConsultantsTable data={filteredConsultants} />
         )}
       </Stack>
     </>
