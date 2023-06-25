@@ -20,30 +20,31 @@ import {
   Typography,
 } from "@mui/material";
 import { isAxiosError } from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import * as yup from "yup";
 
-const profileSchema = yup
-  .object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    email: yup.string().email(),
-    plainPassword: yup.string(),
-    password_confirmation: yup.string(),
-  })
-  .required();
+const profileSchema = yup.object({
+  firstName: yup.string().required(),
+  lastName: yup.string().required(),
+  email: yup.string().email(),
+  plainPassword: yup.string(),
+  password_confirmation: yup.string(),
+});
+//   .required();
 export default function ProfilePage() {
   const [token, setToken] = useToken("token", null);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid, isSubmitting },
+    setError,
+    formState: { errors, isValid, isSubmitting, isSubmitSuccessful },
   } = useForm({
     resolver: yupResolver(profileSchema),
   });
+  const [formError, setFormError] = useState(false);
   const { data, error, isLoading } = useSWR("/api/me", fetcher);
   useEffect(() => {
     if (data) {
@@ -51,7 +52,24 @@ export default function ProfilePage() {
     }
   }, [data]);
   const onsubmit = async (final_data) => {
+    setError(false);
     try {
+      if (final_data.plainPassword) {
+        if (!final_data.password_confirmation) {
+          setError("password_confirmation", {
+            type: "manual",
+            message: "This field must be provided",
+          });
+          throw new Error("Confirmation password must be provided");
+        }
+        if (final_data.plainPassword !== final_data.password_confirmation) {
+          setError("password_confirmation", {
+            type: "manual",
+            message: "Passowrd mismatch",
+          });
+          throw new Error("Password Mismatch");
+        }
+      }
       const { data } = await APIClient.put("/api/me", final_data);
       const { me, ...rest } = token;
       setToken({
@@ -59,6 +77,7 @@ export default function ProfilePage() {
         me: data,
       });
     } catch (error) {
+      setFormError(true);
       if (isAxiosError(error)) {
         console.log(error);
       }
@@ -241,8 +260,15 @@ export default function ProfilePage() {
         <LoadingButton
           form="profileForm"
           variant="contained"
+          color={
+            isSubmitSuccessful && !formError
+              ? "success"
+              : formError
+              ? "error"
+              : "secondary"
+          }
           type="submit"
-          disabled={!isValid}
+          //   disabled={!isValid}
           sx={{ textTransform: "capitalize", mt: 2 }}
           loading={isSubmitting}
           disableElevation
@@ -255,5 +281,5 @@ export default function ProfilePage() {
 }
 
 ProfilePage.getLayout = (page) => {
-  return <ConsultantLayout title="Profile">{page}</ConsultantLayout>;
+  return <ConsultantLayout title="Mon compte">{page}</ConsultantLayout>;
 };

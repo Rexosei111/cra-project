@@ -1,8 +1,10 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { AppBar, IconButton, Stack, Toolbar, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { LayoutContext } from "./agencyLayout";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ConsultantLayoutContext } from "./consultantLayout";
+import { ArrowBack } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 export default function TopBar({ title }) {
   const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth } =
@@ -39,6 +41,13 @@ export default function TopBar({ title }) {
 export function ConsultantTopBar({ title }) {
   const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth } =
     useContext(ConsultantLayoutContext);
+  const router = useRouter();
+
+  const handlePreviousPage = () => {
+    if (router.pathname !== "/a" && router.pathname !== "/a") {
+      router.back();
+    }
+  };
   return (
     <AppBar
       position="fixed"
@@ -53,16 +62,23 @@ export function ConsultantTopBar({ title }) {
       <Toolbar>
         <IconButton
           color="inherit"
-          aria-label="open drawer"
+          aria-label="go to previous page"
           edge="start"
-          onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: "none" } }}
+          onClick={handlePreviousPage}
+          sx={{ mr: 2 }}
         >
-          <MenuIcon />
+          <ArrowBack />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          {title}
-        </Typography>
+        <Stack
+          flexDirection={"row"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          width={"100%"}
+        >
+          <Typography variant="h6" noWrap component="div">
+            {title}
+          </Typography>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

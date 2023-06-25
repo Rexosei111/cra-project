@@ -25,15 +25,6 @@ import { APIClient } from "@/utils/axios";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr_fetcher";
 
-// const contactSchema = yup.object({
-//   name: yup.string().required("This field is required"),
-//   position: yup.string().required("This field is required"),
-//   email: yup
-//     .string()
-//     .email("Email must be valid. Eg. 'example@gmail.com'")
-//     .required("Email is required"),
-//   receiveCra: yup.boolean().required().default(false),
-// });
 const newClientSchema = yup
   .object({
     firstName: yup.string().required(),
