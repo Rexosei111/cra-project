@@ -77,10 +77,14 @@ export default function LoginForm() {
           currentTime.getTime() + token_expire_time
         ).getTime(),
       });
+      const userType = data.me.type;
+      console.log(userType);
       setLoading(false);
       const { callbackUrl } = router.query;
-      if (manager) {
+      if (userType === "manager") {
         router.push("/a/");
+      } else if (userType === "consultant") {
+        router.push("/f/");
       } else {
         console.log("Unable to log in as manager");
       }

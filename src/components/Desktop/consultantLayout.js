@@ -1,7 +1,7 @@
 import { Box, Toolbar } from "@mui/material";
 import React from "react";
 import { createContext } from "react";
-import TopBar from "./TopBar";
+import TopBar, { ConsultantTopBar } from "./TopBar";
 import { ResponsiveDrawer } from "./drawer";
 import Head from "next/head";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -11,10 +11,10 @@ import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import { useRouter } from "next/router";
 
-export const LayoutContext = createContext(null);
+export const ConsultantLayoutContext = createContext(null);
 const drawerWidth = 240;
 
-export default function AgencyLayout({ children, title = "Accueil" }) {
+export default function ConsultantLayout({ children, title = "Accueil" }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const sideNavItems = [
@@ -23,52 +23,31 @@ export default function AgencyLayout({ children, title = "Accueil" }) {
       icon: (
         <HomeOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname === "/a" ? "white" : null}
+          htmlColor={router.pathname === "/f" ? "white" : null}
         />
       ),
-      url: "/a",
+      url: "/f",
     },
     {
       label: "CRA",
       icon: (
         <AssignmentOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/cra") ? "white" : null}
+          htmlColor={router.pathname.startsWith("/f/cra") ? "white" : null}
         />
       ),
-      url: "/a/cra",
+      url: "/f/cra",
     },
-    {
-      label: "Client",
-      icon: (
-        <GroupsOutlinedIcon
-          fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/clients") ? "white" : null}
-        />
-      ),
-      url: "/a/clients",
-    },
+
     {
       label: "Missions",
       icon: (
         <AssignmentTurnedInOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/missions") ? "white" : null}
+          htmlColor={router.pathname.startsWith("/f/missions") ? "white" : null}
         />
       ),
-      url: "/a/missions",
-    },
-    {
-      label: "Consultants",
-      icon: (
-        <GroupOutlinedIcon
-          fontSize="small"
-          htmlColor={
-            router.pathname.startsWith("/a/consultants") ? "white" : null
-          }
-        />
-      ),
-      url: "/a/consultants",
+      url: "/f/missions",
     },
   ];
 
@@ -80,11 +59,11 @@ export default function AgencyLayout({ children, title = "Accueil" }) {
       <Head>
         <title>{title}</title>
       </Head>
-      <LayoutContext.Provider
+      <ConsultantLayoutContext.Provider
         value={{ mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth }}
       >
         <Box sx={{ display: "flex" }}>
-          <TopBar title={title} />
+          <ConsultantTopBar title={title} />
           <ResponsiveDrawer sideNavItems={sideNavItems} />
           <Box
             component="main"
@@ -99,7 +78,7 @@ export default function AgencyLayout({ children, title = "Accueil" }) {
           </Box>
         </Box>
         ;
-      </LayoutContext.Provider>
+      </ConsultantLayoutContext.Provider>
     </>
   );
 }

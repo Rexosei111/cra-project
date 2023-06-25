@@ -100,7 +100,7 @@ export default function ClientsPage() {
             url={"/a/clients/new"}
           />
         )}
-        {data && data["hydra:totalItems"] > 0 && (
+        {data && !error && data["hydra:totalItems"] > 0 && (
           <BasicClientTable data={filteredClients} />
         )}
       </Stack>

@@ -30,77 +30,28 @@ import Link from "next/link";
 import useToken from "@/hooks/token";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { PeopleOutline } from "@mui/icons-material";
+import ConsultantLayout, { ConsultantLayoutContext } from "./consultantLayout";
 
 export function ResponsiveDrawer(props) {
   const [token, setToken] = useToken("token", null);
   const router = useRouter();
   const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth } =
-    useContext(LayoutContext);
-  const { window } = props;
-  const sideNavItems = [
-    // const drawerWidth = 240;
-    {
-      label: "Accueil",
-      icon: (
-        <HomeOutlinedIcon
-          fontSize="small"
-          htmlColor={router.pathname === "/a" ? "white" : null}
-        />
-      ),
-      url: "/a",
-    },
-    {
-      label: "CRA",
-      icon: (
-        <AssignmentOutlinedIcon
-          fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/cra") ? "white" : null}
-        />
-      ),
-      url: "/a/cra",
-    },
-    {
-      label: "Client",
-      icon: (
-        <GroupsOutlinedIcon
-          fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/clients") ? "white" : null}
-        />
-      ),
-      url: "/a/clients",
-    },
-    {
-      label: "Missions",
-      icon: (
-        <AssignmentTurnedInOutlinedIcon
-          fontSize="small"
-          htmlColor={router.pathname.startsWith("/a/missions") ? "white" : null}
-        />
-      ),
-      url: "/a/missions",
-    },
-    {
-      label: "Consultants",
-      icon: (
-        <GroupOutlinedIcon
-          fontSize="small"
-          htmlColor={
-            router.pathname.startsWith("/a/consultants") ? "white" : null
-          }
-        />
-      ),
-      url: "/a/consultants",
-    },
-  ];
-  //   const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  //   const handleDrawerToggle = () => {
-  //     setMobileOpen(!mobileOpen);
-  //   };
+    useContext(
+      router.pathname.startsWith("/a") ? LayoutContext : ConsultantLayoutContext
+    );
+  const { window, sideNavItems } = props;
 
   const Mydrawer = () => {
     const [token, setToken] = useToken("token", null);
     const router = useRouter();
+    const profile = () => {
+      const pathname = router.pathname;
+      if (pathname.startsWith("/a")) {
+        router.push("/a/profile");
+      } else if (pathname.startsWith("/f")) {
+        router.push("/f/profile");
+      }
+    };
     const logout = () => {
       setToken(null);
       router.push("/auth/login");
@@ -115,13 +66,14 @@ export function ResponsiveDrawer(props) {
           px={1}
         >
           <List disablePadding>
-            {sideNavItems.map((item, index) => (
+            {sideNavItems?.map((item, index) => (
               <ListItem
                 key={index}
                 disablePadding
                 sx={{
                   bgcolor: (theme) =>
-                    router.pathname === "/a" && item.label === "Accueil"
+                    router.pathname === "/a" ||
+                    (router.pathname === "/f" && item.label === "Accueil")
                       ? theme.palette.primary.main
                       : router.pathname.startsWith(item.url) &&
                         item.label !== "Accueil"
@@ -135,7 +87,8 @@ export function ResponsiveDrawer(props) {
                     primary={item.label}
                     primaryTypographyProps={{
                       color:
-                        router.pathname === "/a" && item.label === "Accueil"
+                        router.pathname === "/a" ||
+                        (router.pathname === "/f" && item.label === "Accueil")
                           ? "white"
                           : router.pathname.startsWith(item.url) &&
                             item.label !== "Accueil"
@@ -171,14 +124,14 @@ export function ResponsiveDrawer(props) {
               </ListItemButton>
             </ListItem>
             <ListItem disableGutters disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={profile}>
                 <ListItemIcon>
                   <Avatar sx={{ width: 30, height: 30 }}>
                     {token && token?.me?.firstName?.charAt(0)}
                   </Avatar>
                 </ListItemIcon>
                 <ListItemText
-                  primary={token?.me?.firstName}
+                  primary={`${token?.me?.firstName} ${token?.me?.lastName}`}
                   primaryTypographyProps={{
                     fontSize: 14,
                   }}

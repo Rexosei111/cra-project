@@ -61,7 +61,7 @@ export default function MissionsPage({ title }) {
             url={"/a/missions/new"}
           />
         )}
-        {data && data["hydra:totalItems"] > 0 && (
+        {data && !error && data["hydra:totalItems"] > 0 && (
           <BasicMissionsTable data={filteredMissions} />
         )}
       </Stack>

@@ -65,7 +65,7 @@ export default function ConsultantsPage() {
             url={"/a/consultants/new"}
           />
         )}
-        {data && data["hydra:totalItems"] > 0 && (
+        {data && !error && data["hydra:totalItems"] > 0 && (
           <BasicConsultantsTable data={filteredConsultants} />
         )}
       </Stack>
