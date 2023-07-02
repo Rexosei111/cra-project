@@ -1,4 +1,11 @@
-import { AppBar, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  IconButton,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import React, { useContext } from "react";
 import { LayoutContext } from "./agencyLayout";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,8 +14,13 @@ import { ArrowBack } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 export default function TopBar({ title }) {
-  const { mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth } =
-    useContext(LayoutContext);
+  const {
+    mobileOpen,
+    setMobileOpen,
+    handleDrawerToggle,
+    drawerWidth,
+    topbarTitle,
+  } = useContext(LayoutContext);
   return (
     <AppBar
       position="fixed"
@@ -30,9 +42,17 @@ export default function TopBar({ title }) {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          {title}
-        </Typography>
+        <Box width={"100%"}>
+          <Typography
+            variant="h6"
+            textAlign={"center"}
+            textOverflow={"ellipsis"}
+            noWrap
+            component="div"
+          >
+            {topbarTitle}
+          </Typography>
+        </Box>
       </Toolbar>
     </AppBar>
   );

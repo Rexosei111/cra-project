@@ -1,5 +1,5 @@
 import Listing from "@/components/Desktop/Listing";
-import AgencyLayout from "@/components/Desktop/agencyLayout";
+import AgencyLayout, { LayoutContext } from "@/components/Desktop/agencyLayout";
 import BasicClientTable, {
   BasicConsultantsTable,
 } from "@/components/Desktop/Tables";
@@ -11,7 +11,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import { isAxiosError } from "axios";
 import Head from "next/head";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ErrorComponent, ListingLoadingSkeleton } from "../clients";
 import useSWR from "swr";
 import { fetcher } from "@/utils/swr_fetcher";
@@ -19,6 +19,8 @@ import RetryError from "@/components/Errors/ErrorWithRetry";
 import TableListingSkeleton from "@/components/Loading/ListingSkeleton";
 import NoData from "@/components/noData";
 export default function ConsultantsPage() {
+  const { setTopBarTitle } = useContext(LayoutContext);
+  setTopBarTitle("Consultants");
   const [filteredConsultants, setFilteredConsultants] = useState([]);
   const { data, error, isLoading, mutate, isValidating } = useSWR(
     () => "/api/consultants",

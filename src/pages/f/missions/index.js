@@ -1,5 +1,6 @@
 import AgencyLayout from "@/components/Desktop/agencyLayout";
 import BasicClientTable, {
+  BasicConsultantMissionsTable,
   BasicMissionsTable,
 } from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
@@ -62,7 +63,7 @@ export default function ConsultantMissionPage({ title }) {
           />
         )}
         {data && !error && data["hydra:totalItems"] > 0 && (
-          <BasicMissionsTable data={filteredMissions} />
+          <BasicConsultantMissionsTable data={filteredMissions} />
         )}
       </Stack>
     </>

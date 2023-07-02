@@ -43,12 +43,7 @@ export function ResponsiveDrawer(props) {
     const [token, setToken] = useToken("token", null);
     const router = useRouter();
     const profile = () => {
-      const pathname = router.pathname;
-      if (pathname.startsWith("/a")) {
-        router.push("/a/profile");
-      } else if (pathname.startsWith("/f")) {
-        router.push("/f/profile");
-      }
+      router.push("/a/profile");
     };
     const logout = () => {
       setToken(null);
@@ -70,8 +65,7 @@ export function ResponsiveDrawer(props) {
                 disablePadding
                 sx={{
                   bgcolor: (theme) =>
-                    router.pathname === "/a" ||
-                    (router.pathname === "/f" && item.label === "Accueil")
+                    router.pathname === "/a" && item.label === "Accueil"
                       ? theme.palette.primary.main
                       : router.pathname.startsWith(item.url) &&
                         item.label !== "Accueil"
@@ -85,8 +79,7 @@ export function ResponsiveDrawer(props) {
                     primary={item.label}
                     primaryTypographyProps={{
                       color:
-                        router.pathname === "/a" ||
-                        (router.pathname === "/f" && item.label === "Accueil")
+                        router.pathname === "/a" && item.label === "Accueil"
                           ? "white"
                           : router.pathname.startsWith(item.url) &&
                             item.label !== "Accueil"
@@ -108,7 +101,7 @@ export function ResponsiveDrawer(props) {
             }}
             elevation={0}
           >
-            <ListItem disableGutters disablePadding>
+            {/* <ListItem disableGutters disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <PeopleOutline fontSize="small" />
@@ -120,7 +113,7 @@ export function ResponsiveDrawer(props) {
                   }}
                 />
               </ListItemButton>
-            </ListItem>
+            </ListItem> */}
             <ListItem disableGutters disablePadding>
               <ListItemButton onClick={profile}>
                 <ListItemIcon>

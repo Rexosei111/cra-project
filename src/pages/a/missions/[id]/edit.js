@@ -1,4 +1,4 @@
-import AgencyLayout from "@/components/Desktop/agencyLayout";
+import AgencyLayout, { LayoutContext } from "@/components/Desktop/agencyLayout";
 import {
   Box,
   Button,
@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -81,6 +81,8 @@ const editMissionSchema = yup
   })
   .required();
 export default function UpdateMission() {
+  const { setTopBarTitle } = useContext(LayoutContext);
+
   const router = useRouter();
   const [infoOpen, setInfoOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -115,6 +117,7 @@ export default function UpdateMission() {
   useEffect(() => {
     if (data) {
       reset(data);
+      setTopBarTitle(data?.name);
       setValue("client", data?.client?.id);
     }
   }, [data]);
@@ -319,7 +322,7 @@ export default function UpdateMission() {
             </Box>
           </Collapse>
         </Stack>
-        <Stack width={{ xs: "100%" }} flexDirection={"column"} gap={1}>
+        {/* <Stack width={{ xs: "100%" }} flexDirection={"column"} gap={1}>
           <Stack flexDirection={"row"} gap={2} alignItems={"center"} mt={1}>
             <Typography variant="caption" fontSize={17} fontWeight={700}>
               Jours travaillés par défaut
@@ -349,7 +352,7 @@ export default function UpdateMission() {
               </Button>
             </Box>
           </Collapse>
-        </Stack>
+        </Stack> */}
 
         <Stack justifyContent={"center"} alignItems={"center"} my={2}>
           <LoadingButton
@@ -368,12 +371,12 @@ export default function UpdateMission() {
       </Paper>
       <MissionConsultantsForm mission={data} refresh={mutate} />
 
-      <DefaultWorkingDays
+      {/* <DefaultWorkingDays
         open={workingDaysOpen}
         setOpen={setWorkingDaysOpen}
         defaultValues={getValues()?.defaultWorkingDay}
         setWorkingDays={setValue}
-      />
+      /> */}
     </>
   );
 }

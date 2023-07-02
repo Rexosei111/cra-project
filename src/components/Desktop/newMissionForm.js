@@ -52,7 +52,7 @@ const newMissionSchema = yup
     dailyRate: yup.number().default(0),
     vatRate: yup.number().default(0),
     sendCraDate: yup.string(),
-    defaultWorkingDay: yup.object({}),
+    // defaultWorkingDay: yup.object({}),
     automaticSending: yup.boolean().default(true),
     needManagerValisation: yup.boolean().default(false),
     client: yup.string().required(),
@@ -328,7 +328,7 @@ export default function NewMissionForm() {
               />
             </div>
           </Box>
-          <Divider sx={{ my: 1 }} variant="middle" />
+          {/* <Divider sx={{ my: 1 }} variant="middle" />
           <Box width={"100%"}>
             <Typography variant="subtitle2" fontSize={18} fontWeight={700}>
               Jours travaillés par défaut
@@ -348,14 +348,14 @@ export default function NewMissionForm() {
             >
               Paramétrer les jours travaillés
             </Button>
-          </Box>
+          </Box> */}
         </Stack>
       </Paper>
-      <DefaultWorkingDays
+      {/* <DefaultWorkingDays
         open={workingDaysOpen}
         setOpen={setWorkingDaysOpen}
         setWorkingDays={setValue}
-      />
+      /> */}
       <Stack justifyContent={"center"} alignItems={"center"} my={2}>
         <LoadingButton
           //   loadingPosition="start"

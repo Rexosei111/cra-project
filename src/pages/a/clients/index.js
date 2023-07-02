@@ -9,6 +9,8 @@ import { fetcher } from "@/utils/swr_fetcher";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import NoData from "@/components/noData";
+import { LayoutContext } from "@/components/Desktop/agencyLayout";
+import { useContext } from "react";
 
 export const ListingLoadingSkeleton = () => {
   return (
@@ -58,6 +60,8 @@ export const ErrorComponent = ({ refresh }) => {
   );
 };
 export default function ClientsPage() {
+  const { topbarTitle, setTopBarTitle } = useContext(LayoutContext);
+  setTopBarTitle("Clients");
   const [filteredClients, setFilteredClients] = useState([]);
   const { data, error, isLoading, mutate } = useSWR(
     () => "/api/clients",

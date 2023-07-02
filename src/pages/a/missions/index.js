@@ -1,4 +1,4 @@
-import AgencyLayout from "@/components/Desktop/agencyLayout";
+import AgencyLayout, { LayoutContext } from "@/components/Desktop/agencyLayout";
 import BasicClientTable, {
   BasicMissionsTable,
 } from "@/components/Desktop/Tables";
@@ -7,7 +7,7 @@ import { Add } from "@mui/icons-material";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ErrorComponent, ListingLoadingSkeleton } from "../clients";
 import TableListingSkeleton from "@/components/Loading/ListingSkeleton";
 import RetryError from "@/components/Errors/ErrorWithRetry";
@@ -16,6 +16,9 @@ import useSWR from "swr";
 import NoData from "@/components/noData";
 
 export default function MissionsPage({ title }) {
+  const { setTopBarTitle } = useContext(LayoutContext);
+  setTopBarTitle("Missions");
+
   const [filteredMissions, setFilteredMissions] = useState([]);
   const { data, error, isLoading, mutate } = useSWR(
     () => "/api/missions",

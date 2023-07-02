@@ -67,7 +67,12 @@ const AttachConsultantToMission = ({ missions = [], consultantMissions }) => {
     setError(false);
     const final_data = {
       dailyRate: form_data.dailyRate,
-      missions: [...new Set([...consultantMissions, form_data.missionId])],
+      missions: [
+        ...new Set([
+          ...consultantMissions.map((consultant) => consultant?.id),
+          form_data.missionId,
+        ]),
+      ],
     };
     try {
       const { data } = await APIClient.put(
@@ -260,7 +265,7 @@ export default function ConsultantMissionForm({ consultant = {} }) {
         > */}
         {isLoading && <MissionsLoading />}
         {!isLoading && error && <ErrorComponent refresh={mutate} />}
-        {data && data["hydra:member"].length > 0 && (
+        {consultant && consultant?.missions?.length > 0 && (
           <Stack
             flexDirection={"column"}
             component={Paper}
@@ -269,7 +274,7 @@ export default function ConsultantMissionForm({ consultant = {} }) {
             gap={2}
             p={2}
           >
-            {data["hydra:member"].map((mission, index) => (
+            {consultant?.missions.map((mission, index) => (
               <MissionDisplay mission={mission} key={index} />
             ))}
           </Stack>

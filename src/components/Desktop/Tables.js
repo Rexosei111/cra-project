@@ -19,7 +19,14 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import testImage from "../../../public/test.svg";
-import { Edit, Task } from "@mui/icons-material";
+import testImage2 from "../../../public/test2.svg";
+import {
+  CheckCircleOutline,
+  Edit,
+  Event,
+  History,
+  Task,
+} from "@mui/icons-material";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -65,7 +72,7 @@ export default function BasicClientTable({ data = [], entity = "clients" }) {
                     justifyContent={"flex-start"}
                   >
                     <IconButton>
-                      <Image src={testImage} fill />
+                      <Image src={testImage} fill alt="client icon" />
                     </IconButton>
                     <Box>
                       <Typography
@@ -85,7 +92,7 @@ export default function BasicClientTable({ data = [], entity = "clients" }) {
                     </Box>
                   </Stack>
                 </TableCell>
-                <TableCell align="center">
+                {/* <TableCell align="center">
                   <Button
                     disableElevation
                     disableFocusRipple
@@ -100,8 +107,8 @@ export default function BasicClientTable({ data = [], entity = "clients" }) {
                   >
                     {row?.consultants?.length} consultants
                   </Button>
-                </TableCell>
-                <TableCell align="center">
+                </TableCell> */}
+                <TableCell align="left">
                   <Button
                     disableElevation
                     disableFocusRipple
@@ -154,7 +161,7 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
   return (
     <>
       <TableContainer component={Paper} elevation={0}>
-        <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
+        <Table sx={{ minWidth: 750 }} aria-label="simple table">
           <TableBody>
             {data?.map((row) => (
               <TableRow
@@ -170,9 +177,13 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
                     alignItems={"center"}
                     justifyContent={"flex-start"}
                   >
-                    <IconButton>
-                      <Image src={testImage} fill alt="mission icon" />
-                    </IconButton>
+                    <Image
+                      src={testImage}
+                      // fill
+                      alt="mission icon"
+                      width={25}
+                      height={25}
+                    />
 
                     <Typography
                       variant="subtitle2"
@@ -183,7 +194,7 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
                     </Typography>
                   </Stack>
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="left">
                   <Button
                     disableElevation
                     disableFocusRipple
@@ -199,12 +210,76 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
                     {row?.consultants?.length} consultants
                   </Button>
                 </TableCell>
-                {/* <TableCell align="center">
+
+                <TableCell align="center">
+                  <Button
+                    disableElevation
+                    variant="text"
+                    color="secondary"
+                    component={Link}
+                    href={`/a/${entity}/${row?.id}/edit`}
+                    size="small"
+                    sx={{ textTransform: "capitalize" }}
+                    startIcon={<Edit fontSize="small" />}
+                  >
+                    Editer
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+}
+
+export function BasicConsultantMissionsTable({
+  data = [],
+  entity = "missions",
+}) {
+  return (
+    <>
+      <TableContainer component={Paper} elevation={0}>
+        <Table sx={{ minWidth: 750 }} aria-label="simple table">
+          <TableBody>
+            {data?.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  <Stack
+                    flexDirection={"row"}
+                    gap={1}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                  >
+                    {/* <IconButton size="large"> */}
+                    <Image
+                      src={testImage2}
+                      // fill
+                      alt="mission icon"
+                      width={30}
+                      height={30}
+                    />
+                    {/* </IconButton> */}
+
+                    <Typography
+                      variant="subtitle2"
+                      fontSize={14}
+                      color={(theme) => theme.palette.secondary.main}
+                    >
+                      {row?.name}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell align="left">
                   <Button
                     disableElevation
                     disableFocusRipple
-                    variant="text"
-                    color="secondary"
                     disableRipple
                     disableTouchRipple
                     size="small"
@@ -212,11 +287,11 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
                       textTransform: "capitalize",
                       color: (theme) => theme.palette.text.secondary,
                     }}
-                    startIcon={<AssignmentOutlinedIcon fontSize="small" />}
+                    startIcon={<GroupOutlinedIcon fontSize="small" />}
                   >
-                    {row?.missions?.length} missions
+                    {row?.consultants?.length} consultants
                   </Button>
-                </TableCell> */}
+                </TableCell>
 
                 <TableCell align="center">
                   <Button
@@ -298,24 +373,6 @@ export function BasicConsultantsTable({ data = [], entity = "consultants" }) {
                     size="small"
                   />
                 </TableCell>
-                {/* <TableCell align="center">
-                  <Button
-                    disableElevation
-                    disableFocusRipple
-                    variant="text"
-                    color="secondary"
-                    disableRipple
-                    disableTouchRipple
-                    size="small"
-                    sx={{
-                      textTransform: "capitalize",
-                      color: (theme) => theme.palette.text.secondary,
-                    }}
-                    startIcon={<AssignmentOutlinedIcon fontSize="small" />}
-                  >
-                    {row?.missions?.length} missions
-                  </Button>
-                </TableCell> */}
 
                 <TableCell align="center">
                   <Button
@@ -330,6 +387,139 @@ export function BasicConsultantsTable({ data = [], entity = "consultants" }) {
                   >
                     Editer
                   </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+}
+
+function createCraData(name, calories, fat, carbs, protein) {
+  return {
+    name,
+    invoiceDate: calories,
+    workedDays: fat,
+    validatedDate: carbs,
+    validated: protein,
+  };
+}
+
+const craRows = [
+  createCraData(
+    "Frozen yoghurt",
+    "Premier jour du mois suivant",
+    "Mai - 19 jours",
+    "En cours",
+    false
+  ),
+  createCraData(
+    "Ice cream sandwich",
+    "dernier jour du mois",
+    "Janvier - 8 jours",
+    "Validé le 11 Mai",
+    true
+  ),
+  createCraData(
+    "Eclair",
+    "le 25 du mois",
+    "Août - 19 jours",
+    "Validé le 11 Mai",
+    true
+  ),
+  createCraData(
+    "Cupcake",
+    "le dernier lundi",
+    "Août - 19 jours",
+    "Validé le 11 Mai",
+    true
+  ),
+  createCraData(
+    "Gingerbread",
+    "dernier jour du mois",
+    "Août - 19 jours",
+    "Validé le 11 Mai",
+    true
+  ),
+];
+
+export function BasicConsultantsCraTable({ data = [] }) {
+  return (
+    <>
+      <TableContainer component={Paper} elevation={0}>
+        <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
+          <TableHead
+            sx={{
+              bgcolor: (theme) => theme.palette.background.default,
+            }}
+          >
+            <TableRow>
+              <TableCell>Client Name</TableCell>
+              <TableCell align="left">Invoice Sending Date</TableCell>
+              <TableCell></TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {craRows?.map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  <Stack
+                    flexDirection={"row"}
+                    gap={1}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                  >
+                    <IconButton>
+                      <Image src={testImage} fill alt="mission icon" />
+                    </IconButton>
+
+                    <Typography
+                      variant="subtitle2"
+                      fontSize={14}
+                      color={(theme) => theme.palette.secondary.main}
+                    >
+                      {row?.name}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell align="left">
+                  <Button
+                    disableElevation
+                    disableFocusRipple
+                    disableRipple
+                    disableTouchRipple
+                    size="small"
+                    sx={{
+                      textTransform: "capitalize",
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                    startIcon={<Event fontSize="small" />}
+                  >
+                    {row?.invoiceDate}
+                  </Button>
+                </TableCell>
+                <TableCell align="left">
+                  <Stack alignItems={"center"} flexDirection={"row"} gap={1}>
+                    <History fontSize="small" />
+                    <Typography variant="caption">{row?.workedDays}</Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell align="center">
+                  <Chip
+                    icon={<CheckCircleOutline fontSize="small" />}
+                    label={`${row?.validatedDate}`}
+                    variant="filled"
+                    color={row?.validated ? "secondary" : "error"}
+                    size="small"
+                  />
                 </TableCell>
               </TableRow>
             ))}

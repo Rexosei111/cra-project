@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import { APIClient } from "@/utils/axios";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -46,6 +46,7 @@ import { ErrorComponent } from "@/pages/a/clients";
 import NewContactDialogue from "./newContactDialogue";
 import ClientMissionEditForm from "./clientMissionEditForm";
 import ClientConsultantsEditForm from "./clientConsultantForm";
+import { LayoutContext } from "./agencyLayout";
 
 const ClientLoading = () => {
   return (
@@ -79,6 +80,7 @@ const EditClientSchema = yup
   .required();
 
 export default function ClientUpdateForm() {
+  const { setTopBarTitle } = useContext(LayoutContext);
   const [token, setToken] = useToken("token", null);
   const [contacts, setContacts] = useState([]);
   const [contactOpen, setContactOpen] = useState(false);
@@ -113,7 +115,7 @@ export default function ClientUpdateForm() {
   useEffect(() => {
     if (data) {
       reset(data);
-      console.log(data);
+      setTopBarTitle(data?.name);
       setContacts(data?.contacts);
     }
   }, [data]);
@@ -158,7 +160,6 @@ export default function ClientUpdateForm() {
         final_data
       );
       router.push("/a/clients");
-      console.log(data);
       mutate();
     } catch (error) {
       if (isAxiosError(error)) {
@@ -188,7 +189,6 @@ export default function ClientUpdateForm() {
     }
     if (validated) {
       const { data } = await APIClient.put(contact["@id"], contact);
-      console.log(data);
     }
   };
 

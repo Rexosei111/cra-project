@@ -1,5 +1,5 @@
 import { Box, Toolbar } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createContext } from "react";
 import TopBar from "./TopBar";
 import { ResponsiveDrawer } from "./drawer";
@@ -17,6 +17,8 @@ const drawerWidth = 240;
 export default function AgencyLayout({ children, title = "Accueil" }) {
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [topbarTitle, setTopBarTitle] = useState(title);
+
   const sideNavItems = [
     {
       label: "Accueil",
@@ -81,10 +83,17 @@ export default function AgencyLayout({ children, title = "Accueil" }) {
         <title>{title}</title>
       </Head>
       <LayoutContext.Provider
-        value={{ mobileOpen, setMobileOpen, handleDrawerToggle, drawerWidth }}
+        value={{
+          mobileOpen,
+          setMobileOpen,
+          handleDrawerToggle,
+          drawerWidth,
+          topbarTitle,
+          setTopBarTitle,
+        }}
       >
         <Box sx={{ display: "flex" }}>
-          <TopBar title={title} />
+          <TopBar title={topbarTitle ? topbarTitle : title} />
           <ResponsiveDrawer sideNavItems={sideNavItems} />
           <Box
             component="main"

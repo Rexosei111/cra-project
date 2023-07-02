@@ -1,10 +1,12 @@
-import AgencyLayout from "@/components/Desktop/agencyLayout";
+import AgencyLayout, { LayoutContext } from "@/components/Desktop/agencyLayout";
 import NewClientForm from "@/components/Desktop/newClient";
 import { Typography } from "@mui/material";
 import Head from "next/head";
-import React from "react";
+import React, { useContext } from "react";
 
 export default function NewClientPage() {
+  const { topbarTitle, setTopBarTitle } = useContext(LayoutContext);
+  setTopBarTitle("Nouveau client");
   return (
     <>
       <Head>

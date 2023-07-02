@@ -8,6 +8,7 @@ import {
 } from "@mui/icons-material";
 import {
   Button,
+  Chip,
   Collapse,
   Divider,
   Grid,
@@ -38,20 +39,12 @@ const MissionDisplay = ({ mission }) => {
             </Typography>
           </Stack>
         </Stack>
-        <Stack width={"100%"} alignItems={"flex-start"}>
-          <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
-            <IconButton>
-              <PeopleOutline fontSize="small" />
-            </IconButton>
-            <Typography
-              variant="subtitle2"
-              fontSize={14}
-              fontWeight={400}
-              color={(theme) => theme.palette.text.secondary}
-            >
-              {mission?.consultants?.length} consultants
-            </Typography>
-          </Stack>
+        <Stack width={"100%"} alignItems={"center"}>
+          <Chip
+            label={`TJM ${mission.dailyRate}`}
+            variant="outlined"
+            color="secondary"
+          />
         </Stack>
         <Stack width={"100%"} alignItems={"center"}>
           <Button

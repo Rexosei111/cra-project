@@ -36,7 +36,6 @@ export default function LoginForm() {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [manager, setManager] = useState(true);
   const router = useRouter();
   const [token, setToken] = useToken("token", null);
 
@@ -78,7 +77,6 @@ export default function LoginForm() {
         ).getTime(),
       });
       const userType = data.me.type;
-      console.log(userType);
       setLoading(false);
       const { callbackUrl } = router.query;
       if (userType === "manager") {
@@ -103,10 +101,6 @@ export default function LoginForm() {
         handleOpen("Something went wrong. Retry");
       }
     }
-  };
-
-  const handleManagerChange = (event) => {
-    setManager(!manager);
   };
 
   return (
@@ -147,22 +141,7 @@ export default function LoginForm() {
             fullWidth
             placeholder="Tapez votre mot de passe"
           />
-          <FormControlLabel
-            control={
-              <AntSwitch
-                sx={{ m: 1 }}
-                defaultChecked
-                onChange={handleManagerChange}
-                value={manager}
-              />
-            }
-            label="Connectez-vous en tant que gestionnaire"
-            componentsProps={{
-              typography: {
-                fontSize: 13,
-              },
-            }}
-          />
+
           <LoadingButton
             loadingPosition="start"
             loading={loading}

@@ -48,6 +48,7 @@ export default function ProfilePage() {
   const { data, error, isLoading } = useSWR("/api/me", fetcher);
   useEffect(() => {
     if (data) {
+      console.log(data);
       reset(data);
     }
   }, [data]);
@@ -109,7 +110,6 @@ export default function ProfilePage() {
                 variant="outlined"
                 color="secondary"
                 type={"text"}
-                //   label="Prénom"
                 error={errors.lastName ? true : false}
                 helperText={errors.lastName ? errors.lastName?.message : null}
                 InputProps={{
@@ -120,7 +120,6 @@ export default function ProfilePage() {
                   ),
                 }}
                 fullWidth
-                //   placeholder="Tapez votre email"
               />
             </Box>
             <Box width={"100%"}>
@@ -130,7 +129,6 @@ export default function ProfilePage() {
                 variant="outlined"
                 color="secondary"
                 type={"text"}
-                //   label="Prénom"
                 error={errors.firstName ? true : false}
                 helperText={errors.firstName ? errors.firstName?.message : null}
                 InputProps={{
@@ -141,7 +139,6 @@ export default function ProfilePage() {
                   ),
                 }}
                 fullWidth
-                //   placeholder="Tapez votre email"
               />
             </Box>
           </Stack>
@@ -153,7 +150,6 @@ export default function ProfilePage() {
                 variant="outlined"
                 color="secondary"
                 type={"text"}
-                //   label="Prénom"
                 error={errors.email ? true : false}
                 helperText={errors.email ? errors.email?.message : null}
                 InputProps={{
@@ -164,7 +160,6 @@ export default function ProfilePage() {
                   ),
                 }}
                 fullWidth
-                //   placeholder="Tapez votre email"
               />
             </Box>
           </Stack>
@@ -181,7 +176,6 @@ export default function ProfilePage() {
                 variant="outlined"
                 color="secondary"
                 type={"password"}
-                //   label="Prénom"
                 error={errors.plainPassword ? true : false}
                 helperText={
                   errors.plainPassword ? errors.plainPassword?.message : null
@@ -194,7 +188,6 @@ export default function ProfilePage() {
                   ),
                 }}
                 fullWidth
-                //   placeholder="Tapez votre email"
               />
             </Box>
             <Box width={"100%"}>
@@ -204,7 +197,6 @@ export default function ProfilePage() {
                 variant="outlined"
                 color="secondary"
                 type={"password"}
-                //   label="Prénom"
                 error={errors.password_confirmation ? true : false}
                 helperText={
                   errors.password_confirmation
@@ -219,7 +211,6 @@ export default function ProfilePage() {
                   ),
                 }}
                 fullWidth
-                //   placeholder="Tapez votre email"
               />
             </Box>
           </Stack>
