@@ -15,9 +15,20 @@ import { fetcher } from "@/utils/swr_fetcher";
 import useSWR from "swr";
 import NoData from "@/components/noData";
 import ConsultantLayout from "@/components/Desktop/consultantLayout";
+import useToken from "@/hooks/token";
 
 export default function ConsultantMissionPage({ title }) {
   const [filteredMissions, setFilteredMissions] = useState([]);
+  const [token, setToken] = useToken("token", null);
+  // const {
+  //   data: consultantData,
+  //   error: consultantError,
+  //   isLoading: consultantIsLoading,
+  // } = useSWR(
+  //   () => (token ? "/api/consultants/" + token?.me?.id : null),
+  //   fetcher
+  // );
+  // console.log(consultantData);
   const { data, error, isLoading, mutate } = useSWR(
     () => "/api/missions",
     fetcher
