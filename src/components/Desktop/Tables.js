@@ -242,15 +242,39 @@ export function BasicConsultantMissionsTable({
     <>
       <TableContainer component={Paper} elevation={0}>
         <Table sx={{ minWidth: 750 }} aria-label="simple table">
+          <TableHead>
+            <TableRow
+              sx={{ bgcolor: (theme) => theme.palette.background.default }}
+            >
+              <TableCell>Client Name</TableCell>
+              <TableCell align="left">Poste</TableCell>
+              <TableCell align="left">Budget</TableCell>
+              <TableCell align="left"></TableCell>
+              {/* <TableCell align="left"></TableCell> */}
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {data?.map((row) => (
+            {data?.map((row, index) => (
               <TableRow
-                key={row.name}
+                key={index}
                 sx={{
                   "&:last-child td, &:last-child th": { border: 0 },
+                  bgcolor:
+                    index === 2
+                      ? (theme) => theme.palette.background.default
+                      : null,
                 }}
               >
-                <TableCell component="th" scope="row">
+                <TableCell
+                  component="th"
+                  scope="row"
+                  sx={{
+                    color:
+                      index === 2
+                        ? (theme) => theme.palette.action.disabled
+                        : null,
+                  }}
+                >
                   <Stack
                     flexDirection={"row"}
                     gap={1}
@@ -270,42 +294,63 @@ export function BasicConsultantMissionsTable({
                     <Typography
                       variant="subtitle2"
                       fontSize={14}
-                      color={(theme) => theme.palette.secondary.main}
+                      color={(theme) =>
+                        index === 2
+                          ? theme.palette.action.disabled
+                          : theme.palette.secondary.main
+                      }
                     >
                       {row?.name}
                     </Typography>
                   </Stack>
                 </TableCell>
                 <TableCell align="left">
-                  <Button
-                    disableElevation
-                    disableFocusRipple
-                    disableRipple
-                    disableTouchRipple
-                    size="small"
-                    sx={{
-                      textTransform: "capitalize",
-                      color: (theme) => theme.palette.text.secondary,
-                    }}
-                    startIcon={<GroupOutlinedIcon fontSize="small" />}
-                  >
-                    {row?.consultants?.length} consultants
-                  </Button>
+                  <Stack flexDirection={"row"} gap={1}>
+                    <Typography
+                      variant="subtitle2"
+                      color={(theme) =>
+                        index === 2
+                          ? theme.palette.action.disabled
+                          : theme.palette.text.primary
+                      }
+                    >
+                      Dev senior Symony
+                    </Typography>
+                  </Stack>
                 </TableCell>
 
-                <TableCell align="center">
-                  <Button
-                    disableElevation
-                    variant="text"
-                    color="secondary"
-                    component={Link}
-                    href={`/a/${entity}/${row?.id}/edit`}
-                    size="small"
-                    sx={{ textTransform: "capitalize" }}
-                    startIcon={<Edit fontSize="small" />}
+                <TableCell align="left">
+                  <Typography
+                    variant="subtitle2"
+                    color={(theme) =>
+                      index === 2
+                        ? theme.palette.action.disabled
+                        : theme.palette.text.primary
+                    }
                   >
-                    Editer
-                  </Button>
+                    TJM {row.dailyRate} €
+                  </Typography>
+                </TableCell>
+
+                <TableCell align="left">
+                  <Stack flexDirection={"row"} gap={1}>
+                    <Event
+                      fontSize="small"
+                      color={index === 2 ? "action" : "secondary"}
+                    />
+                    <Typography
+                      variant="caption"
+                      color={(theme) =>
+                        index === 2
+                          ? theme.palette.action.disabled
+                          : theme.palette.text.primary
+                      }
+                    >
+                      {index === 2
+                        ? "Durée : 24 mois"
+                        : "Depuis le 10 Sep. 2021"}
+                    </Typography>
+                  </Stack>
                 </TableCell>
               </TableRow>
             ))}
