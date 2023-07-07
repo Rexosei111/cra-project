@@ -333,9 +333,12 @@ export default function AgencyProfileForm({ initialValues }) {
           >
             <Button
               disableElevation
-              color="secondary"
               variant="contained"
-              sx={{ textTransform: "capitalize" }}
+              sx={{
+                textTransform: "capitalize",
+                bgcolor: (theme) => theme.palette.text.primary,
+                width: { xs: "100%", md: "60%" },
+              }}
             >
               Passer à la version complète
             </Button>

@@ -1,5 +1,6 @@
 import AgencyLayout, { LayoutContext } from "@/components/Desktop/agencyLayout";
 import {
+  Alert,
   Box,
   Button,
   Collapse,
@@ -11,6 +12,7 @@ import {
   InputLabel,
   MenuItem,
   Paper,
+  Snackbar,
   Stack,
   Typography,
 } from "@mui/material";
@@ -25,6 +27,7 @@ import { fetcher } from "@/utils/swr_fetcher";
 import { TextInputField } from "@/components/textInput";
 import {
   ArrowCircleRight,
+  Delete,
   ExpandLess,
   ExpandMore,
   Percent,
@@ -82,12 +85,22 @@ const editMissionSchema = yup
   .required();
 export default function UpdateMission() {
   const { setTopBarTitle } = useContext(LayoutContext);
+  const [open, setOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDeleteErrorOpen = () => {
+    setOpen(true);
+  };
+  const handleDeleteErrorClose = () => {
+    setOpen(false);
+  };
 
   const router = useRouter();
   const [infoOpen, setInfoOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [defaultDaysOpen, setDefaultDaysOpen] = useState(false);
   const [workingDaysOpen, setWorkingDaysOpen] = useState(false);
+
   const handleWorkingDaysOpen = () => {
     setWorkingDaysOpen(!workingDaysOpen);
   };
@@ -114,6 +127,21 @@ export default function UpdateMission() {
     fetcher
   );
 
+  const deleteMission = async () => {
+    setDeleting(true);
+    try {
+      await APIClient.delete(`/api/missions/${router.query.id}`);
+      // mutate();
+      router.push("/a/missions");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.log(error);
+      }
+      handleOpen();
+    } finally {
+      setDeleting(false);
+    }
+  };
   useEffect(() => {
     if (data) {
       reset(data);
@@ -146,6 +174,19 @@ export default function UpdateMission() {
 
   return (
     <>
+      <Stack flexDirection={"row"} width={"100%"}>
+        <LoadingButton
+          disableElevation
+          loading={deleting}
+          sx={{ textTransform: "capitalize", ml: "auto", mb: 2 }}
+          startIcon={<Delete fontSize="small" />}
+          variant="contained"
+          onClick={deleteMission}
+          color="error"
+        >
+          Delete mission
+        </LoadingButton>
+      </Stack>
       <Paper
         component={"form"}
         action="#"
@@ -377,6 +418,21 @@ export default function UpdateMission() {
         defaultValues={getValues()?.defaultWorkingDay}
         setWorkingDays={setValue}
       /> */}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleDeleteErrorClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleDeleteErrorClose}
+          variant="filled"
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Unable to delete consultant
+        </Alert>
+      </Snackbar>
     </>
   );
 }

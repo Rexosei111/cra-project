@@ -13,7 +13,6 @@ export default function AgencyProfilePage() {
     () => "/api/organizations/" + token?.me?.organization?.id,
     fetcher
   );
-  console.log(data);
   return (
     <div>
       <AgencyProfileForm initialValues={data} />

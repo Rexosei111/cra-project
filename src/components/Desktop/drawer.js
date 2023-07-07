@@ -42,6 +42,9 @@ export function ResponsiveDrawer(props) {
   const Mydrawer = () => {
     const [token, setToken] = useToken("token", null);
     const router = useRouter();
+    const utilisateurs = () => {
+      router.push("/a/utilisateurs");
+    };
     const profile = () => {
       router.push("/a/profile");
     };
@@ -101,8 +104,8 @@ export function ResponsiveDrawer(props) {
             }}
             elevation={0}
           >
-            {/* <ListItem disableGutters disablePadding>
-              <ListItemButton>
+            <ListItem disableGutters disablePadding>
+              <ListItemButton onClick={utilisateurs}>
                 <ListItemIcon>
                   <PeopleOutline fontSize="small" />
                 </ListItemIcon>
@@ -113,7 +116,7 @@ export function ResponsiveDrawer(props) {
                   }}
                 />
               </ListItemButton>
-            </ListItem> */}
+            </ListItem>
             <ListItem disableGutters disablePadding>
               <ListItemButton onClick={profile}>
                 <ListItemIcon>

@@ -29,6 +29,7 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 import Image from "next/image";
+import { formatFrenchDate } from "@/utils/dateFormat";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -211,6 +212,76 @@ export function BasicMissionsTable({ data = [], entity = "missions" }) {
                   </Button>
                 </TableCell>
 
+                <TableCell align="center">
+                  <Button
+                    disableElevation
+                    variant="text"
+                    color="secondary"
+                    component={Link}
+                    href={`/a/${entity}/${row?.id}/edit`}
+                    size="small"
+                    sx={{ textTransform: "capitalize" }}
+                    startIcon={<Edit fontSize="small" />}
+                  >
+                    Editer
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
+  );
+}
+
+export function BasicManagersTable({ data = [], entity = "utilisateurs" }) {
+  return (
+    <>
+      <TableContainer component={Paper} elevation={0}>
+        <Table sx={{ minWidth: 750 }} aria-label="simple table">
+          <TableBody>
+            {data?.map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{
+                  "&:last-child td, &:last-child th": { border: 0 },
+                }}
+              >
+                <TableCell component="th" scope="row">
+                  <Stack
+                    flexDirection={"row"}
+                    gap={1}
+                    alignItems={"center"}
+                    justifyContent={"flex-start"}
+                  >
+                    <Image
+                      src={testImage}
+                      alt="manager icon"
+                      width={20}
+                      height={20}
+                    />
+
+                    <Typography
+                      variant="subtitle2"
+                      fontSize={14}
+                      color={(theme) => theme.palette.secondary.main}
+                    >
+                      {row?.firstName} {row?.lastName}
+                    </Typography>
+                  </Stack>
+                </TableCell>
+                <TableCell align="center">
+                  <Chip
+                    label="Admin"
+                    variant="filled"
+                    color="primary"
+                    size="small"
+                  />
+                </TableCell>
+                <TableCell alignItems="right">
+                  {formatFrenchDate(new Date(row?.createdAt))}
+                </TableCell>
                 <TableCell align="center">
                   <Button
                     disableElevation

@@ -34,6 +34,15 @@ const theme = createTheme({
       default: "#f5f5f5",
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        text: {
+          textTransform: "capitalize",
+        },
+      },
+    },
+  },
   typography: {
     fontFamily: lato.style.fontFamily,
   },
