@@ -1,38 +1,46 @@
 import * as React from "react";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { LinearProgress, Stack } from "@mui/material";
+import useToken from "@/hooks/token";
 
+const IndexLoadingPage = () => {
+  return (
+    <Stack
+      flexDirection={"column"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      gap={1}
+      width={"100%"}
+      height={"100vh"}
+    >
+      <Typography variant="subtitle2">Loading...</Typography>
+      <LinearProgress sx={{ width: 200 }} />
+    </Stack>
+  );
+};
 export default function Index() {
+  const [token, setToken] = useToken("token", null);
+
   const router = useRouter();
-  if (typeof window !== "undefined") router.push("/auth/login");
+  React.useEffect(() => {
+    if (token === null) {
+      router.push("/auth/login");
+    }
+    const userType = token?.me?.type;
+    if (userType === "manager") {
+      router.push("/a/");
+    } else if (userType === "consultant") {
+      router.push("/f/");
+    }
+  }, [token]);
   return (
     <>
       <Head>
         <title>CRA App</title>
       </Head>
-      <Container
-        maxWidth="md"
-        gap={2}
-        sx={{
-          minHeight: "77vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography
-          variant="h4"
-          my={2}
-          textAlign={{ xs: "center" }}
-          width={{ xs: "100%", lg: "100%" }}
-          fontWeight={700}
-        >
-          CRA APPLICATION INDEX
-        </Typography>
-      </Container>
+      <IndexLoadingPage />
     </>
   );
 }

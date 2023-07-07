@@ -88,6 +88,15 @@ export default function ClientUpdateForm() {
   const [clientLoading, setClientLoading] = useState(false);
   const [clientErrorOpen, setClientErrorOpen] = useState(false);
   const [newClientOpen, setNewClientOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [clientDeleteOpen, setClientDeleteOpen] = useState(false);
+
+  const handleClientDeleteErrorOpen = () => {
+    setClientDeleteOpen(true);
+  };
+  const handleClientDeleteErrorClose = () => {
+    setClientDeleteOpen(false);
+  };
 
   const handleNewClientOpen = () => {
     setNewClientOpen(!newClientOpen);
@@ -112,6 +121,22 @@ export default function ClientUpdateForm() {
     () => `/api/clients/${router.query.id}`,
     fetcher
   );
+
+  const deleteClient = async () => {
+    setDeleting(true);
+    try {
+      await APIClient.delete(`/api/clients/${router.query.id}`);
+      // mutate();
+      router.push("/a/clients");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.log(error);
+      }
+      handleClientDeleteErrorOpen();
+    } finally {
+      setDeleting(false);
+    }
+  };
   useEffect(() => {
     if (data) {
       reset(data);
@@ -194,6 +219,19 @@ export default function ClientUpdateForm() {
 
   return (
     <Stack flexDirection={"column"} gap={2} width={"100%"}>
+      <Stack flexDirection={"row"} width={"100%"}>
+        <LoadingButton
+          disableElevation
+          loading={deleting}
+          sx={{ textTransform: "capitalize", ml: "auto", mb: 2 }}
+          startIcon={<Delete fontSize="small" />}
+          variant="contained"
+          onClick={deleteClient}
+          color="error"
+        >
+          Delete consultant
+        </LoadingButton>
+      </Stack>
       <Paper
         component={"form"}
         action="#"
@@ -487,6 +525,21 @@ export default function ClientUpdateForm() {
         handleNewClientOpen={handleNewClientOpen}
         mutate={mutate}
       />
+      <Snackbar
+        open={clientDeleteOpen}
+        autoHideDuration={6000}
+        onClose={handleClientDeleteErrorClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClientDeleteErrorClose}
+          variant="filled"
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          Unable to delete consultant
+        </Alert>
+      </Snackbar>
     </Stack>
   );
 }
