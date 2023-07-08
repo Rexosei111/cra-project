@@ -34,10 +34,10 @@ export default function ConsultantLayout({ children, title = "Accueil" }) {
       icon: (
         <AssignmentOutlinedIcon
           fontSize="small"
-          htmlColor={router.pathname.startsWith("/f/cra") ? "white" : null}
+          htmlColor={router.pathname.startsWith("/f/cras") ? "white" : null}
         />
       ),
-      url: "/f/cra",
+      url: "/f/cras",
     },
 
     {

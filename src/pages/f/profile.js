@@ -48,7 +48,6 @@ export default function ProfilePage() {
   const { data, error, isLoading } = useSWR("/api/me", fetcher);
   useEffect(() => {
     if (data) {
-      console.log(data);
       reset(data);
     }
   }, [data]);
