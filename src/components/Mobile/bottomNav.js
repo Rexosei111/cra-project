@@ -94,9 +94,6 @@ export default function LabelBottomNavigation({ sideNavItems }) {
         icon={<AssignmentTurnedInOutlinedIcon />}
       />
       <BottomNavigationAction
-        showlabel={false}
-        // label="Mon compte"
-        // value="/f/profile"
         onClick={handleClick}
         icon={
           <Avatar sx={{ width: 35, height: 35 }}>

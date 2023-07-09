@@ -5,7 +5,14 @@ import BasicClientTable, {
 } from "@/components/Desktop/Tables";
 import SearchBar from "@/components/Desktop/searchBar";
 import { Add } from "@mui/icons-material";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Fab,
+  Stack,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -16,10 +23,12 @@ import useSWR from "swr";
 import NoData from "@/components/noData";
 import ConsultantLayout from "@/components/Desktop/consultantLayout";
 import useToken from "@/hooks/token";
+import MobileMissionsListing from "@/components/Mobile/Listings";
 
 export default function ConsultantMissionPage({ title }) {
   const [filteredMissions, setFilteredMissions] = useState([]);
   const [token, setToken] = useToken("token", null);
+  const sm = useMediaQuery("(max-width: 600px)");
   // const {
   //   data: consultantData,
   //   error: consultantError,
@@ -49,21 +58,12 @@ export default function ConsultantMissionPage({ title }) {
           width={"100%"}
           flexDirection={"row"}
           justifyContent={"space-between"}
+          p={2}
         >
           <SearchBar
             data={data ? data["hydra:member"] : []}
             setData={setFilteredMissions}
           />
-          <Button
-            variant="contained"
-            component={Link}
-            href="/a/missions/new"
-            startIcon={<Add fontSize="small" />}
-            sx={{ ml: "auto", textTransform: "capitalize" }}
-            disableElevation
-          >
-            New
-          </Button>
         </Stack>
         {isLoading && <TableListingSkeleton />}
         {!isLoading && error && <RetryError refresh={mutate} />}
@@ -74,7 +74,10 @@ export default function ConsultantMissionPage({ title }) {
           />
         )}
         {data && !error && data["hydra:totalItems"] > 0 && (
-          <BasicConsultantMissionsTable data={filteredMissions} />
+          <>
+            {sm && <MobileMissionsListing data={filteredMissions} />}
+            {!sm && <BasicConsultantMissionsTable data={filteredMissions} />}
+          </>
         )}
       </Stack>
     </>

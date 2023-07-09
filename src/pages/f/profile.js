@@ -86,7 +86,7 @@ export default function ProfilePage() {
   return (
     <>
       <Paper
-        sx={{ p: 2, borderRadius: 2 }}
+        sx={{ p: 2, mt: 2 }}
         elevation={0}
         component={"form"}
         onSubmit={handleSubmit(onsubmit)}

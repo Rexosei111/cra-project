@@ -20,7 +20,9 @@ import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import AssignmentOutlinedIcon from "@mui/icons-material/AssignmentOutlined";
 import testImage from "../../../public/test.svg";
 import testImage2 from "../../../public/test2.svg";
+import craImage from "../../../public/test3.svg";
 import {
+  CheckCircle,
   CheckCircleOutline,
   Edit,
   Event,
@@ -311,7 +313,7 @@ export function BasicConsultantMissionsTable({
 }) {
   return (
     <>
-      <TableContainer component={Paper} elevation={0}>
+      <TableContainer component={Paper} elevation={0} sx={{ mx: 2 }}>
         <Table sx={{ minWidth: 750 }} aria-label="simple table">
           <TableHead>
             <TableRow
@@ -564,8 +566,8 @@ const craRows = [
 export function BasicConsultantsCraTable({ data = [] }) {
   return (
     <>
-      <TableContainer component={Paper} elevation={0}>
-        <Table sx={{ minWidth: 750 }} aria-label="simple table" size="small">
+      <TableContainer component={Paper} elevation={0} sx={{ mx: 2 }}>
+        <Table sx={{ minWidth: 750 }} aria-label="simple table">
           <TableHead
             sx={{
               bgcolor: (theme) => theme.palette.background.default,
@@ -593,9 +595,9 @@ export function BasicConsultantsCraTable({ data = [] }) {
                     alignItems={"center"}
                     justifyContent={"flex-start"}
                   >
-                    <IconButton>
-                      <Image src={testImage} fill alt="mission icon" />
-                    </IconButton>
+                    {/* <IconButton> */}
+                    <Image src={craImage} width={30} alt="mission icon" />
+                    {/* </IconButton> */}
 
                     <Typography
                       variant="subtitle2"
@@ -630,11 +632,11 @@ export function BasicConsultantsCraTable({ data = [] }) {
                 </TableCell>
                 <TableCell align="center">
                   <Chip
-                    icon={<CheckCircleOutline fontSize="small" />}
+                    icon={<CheckCircle fontSize="small" />}
                     label={`${row?.validatedDate}`}
                     variant="filled"
                     color={row?.validated ? "secondary" : "error"}
-                    size="small"
+                    // size="small"
                   />
                 </TableCell>
               </TableRow>

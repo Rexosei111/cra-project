@@ -11,6 +11,7 @@ import {
 import Image from "next/image";
 import React from "react";
 import testImage from "../../../public/test.svg";
+import craImage from "../../../public/test3.svg";
 import { CheckOutlined, Event, History } from "@mui/icons-material";
 
 function createCraData(name, calories, fat, carbs, protein) {
@@ -95,12 +96,13 @@ export default function CraListing() {
       {craRows &&
         craRows.map((row, index) => (
           <ListItem
-            sx={{ p: 1, bgcolor: (theme) => theme.palette.background.paper }}
+            key={index}
+            sx={{ p: 2, bgcolor: (theme) => theme.palette.background.paper }}
             alignItems="flex-start"
           >
             <ListItemIcon>
               <Image
-                src={testImage}
+                src={craImage}
                 // fill
                 alt="mission icon"
                 width={35}

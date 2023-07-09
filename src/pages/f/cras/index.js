@@ -7,6 +7,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Fab,
   IconButton,
   Paper,
   Stack,
@@ -29,6 +30,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { APIClient } from "@/utils/axios";
 import { isAxiosError } from "axios";
 import useToken from "@/hooks/token";
+import SwipeableTemporaryDrawer from "@/components/Mobile/swipperbleDrawer";
 
 const NewCraDialog = ({ open, setOpen }) => {
   const [mission, setMission] = useState(null);
@@ -160,10 +162,10 @@ export function FullWidthTabs({ view, setView }) {
       sx={{
         bgcolor: (theme) => theme.palette.background.default,
         borderBottom: "1px solid #D8D5E5",
+        mx: 2,
       }}
       indicatorColor="secondary"
       textColor="inherit"
-      //   variant="fullWidth"
       aria-label="full width tabs example"
     >
       <Tab
@@ -189,6 +191,7 @@ export default function CraIndexPage() {
   const [view, setView] = useState("cra");
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
+  const [bottomDrawerOpen, setBottomDrawerOpen] = useState(false);
   useEffect(() => {
     if (typeof data !== "undefined") {
       setFilteredCRA(data["hydra:member"]);
@@ -199,25 +202,29 @@ export default function CraIndexPage() {
     setNewCraOpen(true);
   };
 
+  const handleBottomDrawerOpen = () => {
+    setBottomDrawerOpen(true);
+  };
+
   return (
     <Stack flexDirection={"column"} gap={2} width={"100%"}>
       <FullWidthTabs view={view} setView={setView} />
-      <Stack flexDirection={"row"} justifyContent={"space-between"}>
+      <Stack flexDirection={"row"} justifyContent={"space-between"} p={2}>
         <SearchBar
           data={data ? data["hydra:member"] : []}
           setData={setFilteredCRA}
         />
-        <Button
-          // component={Link}
-          // href="/f/cra/new"
-          onClick={handleNewCraOpen}
-          variant="contained"
-          disableElevation
-          color="primary"
-          startIcon={<Add fontSize="small" />}
-        >
-          New
-        </Button>
+        {!matches && (
+          <Button
+            onClick={handleNewCraOpen}
+            variant="contained"
+            disableElevation
+            color="primary"
+            startIcon={<Add fontSize="small" />}
+          >
+            New
+          </Button>
+        )}
       </Stack>
       <TabPanel value={view} index={"cra"}>
         {matches && <CraListing />}
@@ -226,7 +233,26 @@ export default function CraIndexPage() {
       <TabPanel value={view} index={"factures"}>
         <Typography>Tab 2</Typography>
       </TabPanel>
-      <NewCraDialog open={newCraOpen} setOpen={setNewCraOpen} />
+      {matches && (
+        <Fab
+          variant="extended"
+          size="large"
+          color="primary"
+          aria-label="new"
+          onClick={handleBottomDrawerOpen}
+          sx={{ position: "fixed", bottom: 80, right: 20 }}
+        >
+          <Add />
+          New
+        </Fab>
+      )}
+      {!matches && <NewCraDialog open={newCraOpen} setOpen={setNewCraOpen} />}
+      {matches && (
+        <SwipeableTemporaryDrawer
+          open={bottomDrawerOpen}
+          setOpen={setBottomDrawerOpen}
+        />
+      )}
     </Stack>
   );
 }

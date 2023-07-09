@@ -70,7 +70,7 @@ export default function ConsultantLayout({ children, title = "Accueil" }) {
             component="main"
             sx={{
               flexGrow: 1,
-              p: 2,
+              // p: 2,
               mb: 5,
               width: { xs: "100%", sm: `calc(100% - ${drawerWidth}px)` },
             }}
