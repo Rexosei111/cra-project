@@ -91,8 +91,6 @@ export default function SwipeableTemporaryDrawer({ open, setOpen }) {
           bgcolor: (theme) => theme.palette.background.default,
         }}
         role="presentation"
-        //   onClick={toggleDrawer(anchor, false)}
-        //   onKeyDown={toggleDrawer(anchor, false)}
       >
         <Stack
           width={"100%"}
@@ -126,12 +124,20 @@ export default function SwipeableTemporaryDrawer({ open, setOpen }) {
       </Box>
     );
   };
+  const iOS =
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod/.test(navigator.userAgent);
   return (
     <div>
       <React.Fragment key={"bottom"}>
-        {/* <Button onClick={toggleDrawer("bottom", true)}>{"bottom"}</Button> */}
         <SwipeableDrawer
+          variant="temporary"
+          ModalProps={{
+            keepMounted: false,
+          }}
           anchor="bottom"
+          disableBackdropTransition={!iOS}
+          disableDiscovery={iOS}
           open={open}
           onClose={toggleDrawer("bottom", false)}
           onOpen={toggleDrawer("bottom", true)}
